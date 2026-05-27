@@ -13,8 +13,16 @@ WORKDIR /app
 
 COPY . .
 
+RUN mkdir -p bootstrap/cache
+RUN mkdir -p storage/framework/cache
+RUN mkdir -p storage/framework/sessions
+RUN mkdir -p storage/framework/views
+
+RUN chmod -R 777 storage
+RUN chmod -R 777 bootstrap/cache
+
 RUN composer install
 
 EXPOSE 10000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
+CMD php artisan serve --host=0.0.0.0 --port=10000
