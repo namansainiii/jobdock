@@ -9,7 +9,7 @@
            <p1>No job present</p1>
        @endforelse
     </div>
-    <a href="{{ route('jobs.index' , $job->id) }}" class="block text-xl text-center ">
+    <a href="{{ route('jobs.index') }}" class="block text-xl text-center">
         <i class="fa fa-arrow-alt-circle-right"></i>Show All Jobs</a>
     {{-- <x-bottom-banner title="looking to hire?" heading="testing heading"/> --}}
     <x-bottom-banner />
