@@ -26,6 +26,14 @@ RUN php artisan view:clear || true
 RUN php artisan cache:clear || true
 RUN php artisan config:clear || true
 
+
+RUN apt-get update && apt-get install -y curl
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+
+RUN apt-get install -y nodejs
+
+
 RUN npm install
 RUN npm run build
 
