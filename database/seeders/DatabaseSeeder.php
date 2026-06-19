@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(TestUserSeeder::class);
-        $this->call(RandomUserSeeder::class);
+        // $this->call(RandomUserSeeder::class);
         $this->call(JobSeeder::class);
         $this->call(BookmarkSeeder::class);
 
