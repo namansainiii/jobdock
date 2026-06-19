@@ -24,21 +24,17 @@ class JobSeeder extends Seeder
 
         //get all other user id from db 
         $userIds = User::where('email' , '!=' , 'test@test.com')->pluck('id')->toArray();
-
-        foreach($jobListings as $index => &$listing){
-            if($index < 2){
+        
+        foreach ($jobListings as $index => &$listing) {
+        
+            if ($index < 2 || empty($userIds)) {
                 $listing['user_id'] = $testUserId;
-            }else{
-                //assign user id to listings
+            } else {
                 $listing['user_id'] = $userIds[array_rand($userIds)];
             }
-            //assign user id to listings
-            $listing['user_id'] = $userIds[array_rand($userIds)];
-
-            //add timespan
-            $listings['created_at'] = now();
-            $listings['updated_at'] = now();
-
+        
+            $listing['created_at'] = now();
+            $listing['updated_at'] = now();
         }
 
         //insert job listings 
