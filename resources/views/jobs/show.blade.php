@@ -139,6 +139,9 @@
             @endauth
         </div>
 
+        <div class="mb-4">
+            <input type="text" id="search-input" placeholder="Search location..." class="w-full border rounded p-3">
+        </div>
         <div class="bg-white p-6 rounded-lg shadow-md mt-6">
             <div id="map"></div>
         </div>
@@ -233,4 +236,59 @@
       })
       .catch((error) => console.error('Error geocoding address:', error));
   });
+
+    let map;
+    let marker;
+    
+    function initMap() {
+    
+        const defaultLocation = {
+            lat: 28.6139,
+            lng: 77.2090
+        };
+    
+        map = new google.maps.Map(
+            document.getElementById('map'),
+            {
+                center: defaultLocation,
+                zoom: 12
+            }
+        );
+    
+        marker = new google.maps.Marker({
+            position: defaultLocation,
+            map: map,
+            draggable: true
+        });
+    
+        const input =
+            document.getElementById('search-input');
+    
+        const autocomplete =
+            new google.maps.places.Autocomplete(input);
+    
+        autocomplete.addListener('place_changed', () => {
+    
+            const place = autocomplete.getPlace();
+    
+            if (!place.geometry) return;
+    
+            map.setCenter(place.geometry.location);
+    
+            marker.setPosition(place.geometry.location);
+    
+            console.log(
+                'Latitude:',
+                place.geometry.location.lat()
+            );
+    
+            console.log(
+                'Longitude:',
+                place.geometry.location.lng()
+            );
+        });
+    }
+
 </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
