@@ -138,10 +138,6 @@
                 </a>
             @endauth
         </div>
-
-        <div class="mb-4">
-            <input type="text" id="search-input" placeholder="Search location..." class="w-full border rounded p-3">
-        </div>
         <div class="bg-white p-6 rounded-lg shadow-md mt-6">
             <div id="map"></div>
         </div>
@@ -194,12 +190,6 @@
 </div>
 </x-layout>
 
-
-<link
-  href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css"
-  rel="stylesheet"
-/>
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     // Your Mapbox access token
@@ -290,5 +280,3 @@
     }
 
 </script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap" async defer></script>

@@ -28,12 +28,7 @@
 
                     <x-input.select label="Job Type" id="job_type" name="job_type" :options="[
                         'Full-Time' => 'Full-Time' , 
-                        'Part-Time' => 'Part-Time' 
-                        // 'Contract' => 'Contract' , 
-                        // 'Temporary' => 'Temporary' , 
-                        // 'Internship' => 'Internship' , 
-                        // 'Volunteer' => 'Volunteer' , 
-                        // 'On-Call' => 'On-Call' 
+                        'Part-Time' => 'Part-Time'
                     ]" />
 
                     <x-input.select label="Remote" id="remote" name="remote" :options="[
@@ -43,11 +38,23 @@
 
                     <x-input.text label="Address" id="address" name="address" placeholder="123 Main St" />
 
-                    <x-input.text label="City" id="city" name="city" placeholder="Albany" />
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <x-input.text label="City" id="city" name="city" width="width:600px;" readonly/>
+        
+                            <x-input.text label="State" id="state" name="state" width="width:600px;" readonly/>
+        
+                            <x-input.text label="ZIP Code" id="zipcode" name="zipcode" width="width:600px;" readonly/>
+        
+                            <x-input.text label="Latitude" id="latitude" name="latitude" width="width:600px;" readonly hidden/>
+        
+                            <x-input.text label="Longitude" id="longitude" name="longitude"  width="width:600px;" readonly hidden/>
+                        </div>
+                        <div>                    
+                            <div id="map" class="w-full rounded border shadow mt-4" style="height:212px; width:339px;"></div>
+                        </div>
 
-                    <x-input.text label="State" id="state" name="state" placeholder="NY" />
-
-                    <x-input.text label="ZIP Code" id="zipcode" name="zipcode" placeholder="12201" />
+                    </div>
 
                     <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
                         Company Info
@@ -73,3 +80,86 @@
                 </form>
             </div>
 </x-layout>
+
+
+<script>
+let map;
+let marker;
+let autocomplete;
+
+function initMap() {
+
+    const defaultLocation = {
+        lat: 28.6139,
+        lng: 77.2090
+    };
+
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 5
+    });
+
+    marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map
+    });
+
+    autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById("address")
+    );
+
+    autocomplete.addListener("place_changed", function() {
+
+        const place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+            return;
+        }
+
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+
+        map.setCenter({
+            lat: lat,
+            lng: lng
+        });
+
+        map.setZoom(15);
+
+        marker.setPosition({
+            lat: lat,
+            lng: lng
+        });
+
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lng;
+
+        let city = '';
+        let state = '';
+        let zipcode = '';
+
+        place.address_components.forEach(component => {
+
+            const types = component.types;
+
+            if (types.includes('locality')) {
+                city = component.long_name;
+            }
+
+            if (types.includes('administrative_area_level_1')) {
+                state = component.long_name;
+            }
+
+            if (types.includes('postal_code')) {
+                zipcode = component.long_name;
+            }
+
+        });
+
+        document.getElementById("city").value = city;
+        document.getElementById("state").value = state;
+        document.getElementById("zipcode").value = zipcode;
+
+    });
+}
+</script>
