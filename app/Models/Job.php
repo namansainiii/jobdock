@@ -29,6 +29,8 @@ class Job extends Model
         'city' , 
         'state' , 
         'zipcode' , 
+        'latitude',
+        'longitude',  
         'contact_email' , 
         'contact_phone' , 
         'company_name' , 

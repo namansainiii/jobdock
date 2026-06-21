@@ -83,6 +83,8 @@ class JobController extends Controller
             'company_description' => 'nullable|string',
             'company_logo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
             'company_website' => 'nullable|url',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
 
