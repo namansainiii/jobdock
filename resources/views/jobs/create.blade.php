@@ -105,8 +105,11 @@ function initMap() {
     });
 
     autocomplete = new google.maps.places.Autocomplete(
-        document.getElementById("address")
-    );
+    document.getElementById("address"),
+    {
+        types: ['address']
+    }
+);
 
     autocomplete.addListener("place_changed", function() {
 
@@ -142,8 +145,8 @@ function initMap() {
 
             const types = component.types;
 
-            if (types.includes('locality')) {
-                city = component.long_name;
+            if (types.includes('locality') ||types.includes('sublocality') ||types.includes('sublocality_level_1')) {
+               city = component.long_name;
             }
 
             if (types.includes('administrative_area_level_1')) {
@@ -154,6 +157,12 @@ function initMap() {
                 zipcode = component.long_name;
             }
 
+        });
+
+        marker = new google.maps.Marker({
+            position: defaultLocation,
+            map: map,
+            draggable: true
         });
 
         document.getElementById("city").value = city;
