@@ -38,7 +38,7 @@
 
                     <x-input.text label="Address" id="address" name="address" placeholder="123 Main St" />
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2">
                         <div>
                             <x-input.text label="City" id="city" name="city" width="width:600px;" readonly/>
         
@@ -51,7 +51,7 @@
                             <x-input.text label="Longitude" id="longitude" name="longitude"  width="width:600px;" readonly hidden/>
                         </div>
                         <div>                    
-                            <div id="map" class="w-full rounded border shadow mt-4" style="height:212px; width:339px;"></div>
+                            <div id="map" class="w-full rounded border shadow mt-4" style="height:212px; width:350px;"></div>
                         </div>
 
                     </div>
