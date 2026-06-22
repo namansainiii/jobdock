@@ -31,15 +31,16 @@
 
                     <div class="flex items-center space-x-3">
                         <a href="{{ route('dashboard.index') }}">
-                            @if(Auth::user()->avatar)
-                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->avatar }}" class="w-10 h-10 object-cover rounded-full"/>
+                            <img src="{{ asset('images/profile.png') }}" class="w-10 h-10 object-cover rounded-full" />
 
+                            {{-- @if(Auth::user()->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->avatar }}" class="w-10 h-10 object-cover rounded-full"/>
                             @else
                                 <img src="{{ asset('storage/app/public/avatar/profile.png')}}" alt="{{ Auth::user()->avatar }}" class="w-10 h-10 object-cover rounded-full" />
-
-                            @endif
+                            @endif --}}
                         </a>
                     </div>
+
                     <x-logout-button />
                      
 
