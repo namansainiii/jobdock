@@ -12,7 +12,7 @@
     <a href="{{ route('jobs.index') }}" class="block text-xl text-center">
         <i class="fa fa-arrow-alt-circle-right"></i>Show All Jobs</a>
     {{-- <x-bottom-banner title="looking to hire?" heading="testing heading"/> --}}
-    <x-bottom-banner />
+    {{-- <x-bottom-banner /> --}}
 
 </x-layout>
 
