@@ -15,13 +15,18 @@
     <title>{{$title ?? 'JobDock | Find and list jobs'}}</title>
 </head>
 <body class="bg-gray-100">
+
     <x-header/>
+
     @if(request()->is('/'))
+    <h1 class="text-center text-3xl border p-3 bg-blue-900 text-white">Welcome to JobDock</h1>
     {{-- <x-hero title="find your dream job"/> --}}
     <x-hero/>
     {{-- <x-top-banner/> --}}
 
     @endif
+
+
     {{-- <x-top-banner title="unlock your career potential"/> --}}
     <x-top-banner/>
 

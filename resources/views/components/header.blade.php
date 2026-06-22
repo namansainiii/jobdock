@@ -23,11 +23,11 @@
                         Dashboard
                     </x-navlink> --}}
 
-                    <x-logout-button />
 
                     <x-button-link url="/jobs/create" icon="edit">
                         Create Job
                     </x-button-link>
+
 
                     <div class="flex items-center space-x-3">
                         <a href="{{ route('dashboard.index') }}">
@@ -40,6 +40,8 @@
                             @endif
                         </a>
                     </div>
+                    <x-logout-button />
+                     
 
                     @else
 
