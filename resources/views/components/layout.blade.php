@@ -23,10 +23,7 @@
     {{-- <x-hero title="find your dream job"/> --}}
     <x-hero/>
     {{-- <x-top-banner/> --}}
-
     @endif
-
-
     {{-- <x-top-banner title="unlock your career potential"/> --}}
     <x-top-banner/>
 
@@ -39,7 +36,7 @@
         @if(session('error'))
         <x-alert type="error" message="{{session('error')}}"/>
         @endif
-        {{$slot}}
+        <div class="mb-2">{{$slot}}</div>
     </main>
     <script src="{{ asset('script/script.js') }}"></script>
 </body>
