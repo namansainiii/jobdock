@@ -33,8 +33,8 @@ class ProfileController extends Controller
                 Storage::disk('s3')->delete($user->avatar);
             }
             
-            $path = $request->file('avatar')->store('avatar', 's3');
-
+            $path = $request->file('avatar')->store('avatars', 's3');
+            
             //add path to db
             $validatedData['avatar'] = $path;
         }
