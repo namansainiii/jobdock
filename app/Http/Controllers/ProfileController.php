@@ -34,9 +34,10 @@ class ProfileController extends Controller
             }
             
             $path = $request->file('avatar')->store('avatars', 's3');
-            
-            //add path to db
-            $validatedData['avatar'] = $path;
+
+dd($path);
+
+$validatedData['avatar'] = $path;
         }
 
         //update user info
