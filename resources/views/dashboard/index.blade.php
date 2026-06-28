@@ -4,16 +4,13 @@
             <h3 class="h3 text-3xl text-center font-bold mb-4">
                 My Profile
             </h3>
-            @if($user->avatar)
             <div class="mt-2 flex justify-center">
-                <img src="{{asset('storage/' . $user->avatar)}}" alt="{{$user->name}}" class="w-32 h-32 object-cover rounded-full">
+                @if($user->avatar)
+                    <img src="{{asset('storage/' . $user->avatar)}}" alt="{{$user->name}}" class="w-32 h-32 object-cover rounded-full">
+                @else
+                    <img src="{{ asset('images/profile.png') }}" class="w-32 h-32 object-cover rounded-full" />
+                @endif
             </div>
-            @endif
-
-            <div class="mt-2 flex justify-center">
-            <img src="{{ asset('images/profile.png') }}" class="w-32 h-32 object-cover rounded-full" />
-            </div>
-
 
             <form method="POST" action={{ route('profile.update') }} enctype="multipart/form-data">
                 @csrf
