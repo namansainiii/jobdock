@@ -6,9 +6,9 @@
             </h3>
             <div class="mt-2 flex justify-center">
                 @if($user->avatar)
-                    <img src="{{asset('storage/' . $user->avatar)}}" alt="{{$user->name}}" class="w-32 h-32 object-cover rounded-full">
+                    <img src="{{ Storage::disk('s3')->url($user->avatar) }}" alt="{{ $user->name }}" class="w-32 h-32 object-cover rounded-full">
                 @else
-                    <img src="{{ asset('images/profile.png') }}" class="w-32 h-32 object-cover rounded-full" />
+                    <img src="{{ asset('images/profile.png') }}" class="w-32 h-32 object-cover rounded-full">
                 @endif
             </div>
 

@@ -29,12 +29,11 @@ class ProfileController extends Controller
             //    Storage::delete('public/avatar/' . basename($user->avatar));
             // }
 
-            if($user->avatar){
-                Storage::disk('public')->delete($user->avatar);
+            if ($user->avatar) {
+                Storage::disk('s3')->delete($user->avatar);
             }
-
-            //store the file and get path
-            $path = $request->file('avatar')->store('avatar' , 'public');
+            
+            $path = $request->file('avatar')->store('avatar', 's3');
 
             //add path to db
             $validatedData['avatar'] = $path;
