@@ -33,11 +33,26 @@ class ProfileController extends Controller
                 Storage::disk('s3')->delete($user->avatar);
             }
             
-            $path = $request->file('avatar')->store('avatars', 's3');
+            // $path = $request->file('avatar')->store('avatars', 's3');
+            $extension = $request->file('avatar')->getClientOriginalExtension();
 
-dd($path);
+            $fileName = str_replace(
+                ['@', '.', ' '],
+                ['_', '_', '_'],
+                strtolower($user->email)
+            ) . '.' . $extension;
+            
+            if ($user->avatar) {
+                Storage::disk('s3')->delete($user->avatar);
+            }
 
-$validatedData['avatar'] = $path;
+            $path = $request->file('avatar')->storeAs(
+                'avatars',
+                $fileName,
+                's3'
+            );
+
+            $validatedData['avatar'] = $path;
         }
 
         //update user info
