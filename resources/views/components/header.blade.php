@@ -15,11 +15,9 @@
 
                     @auth
 
-                    @if(Auth::user()->role === 'employee')
                     <x-navlink url="/bookmarks" :active="request()->is('bookmarks')">
                         Saved Jobs
                     </x-navlink>
-                    @endif
 
                     {{-- <x-navlink url="/dashboard" :active="request()->is('dashboard')" icon="gauge">
                         Dashboard
@@ -72,11 +70,9 @@
 
                 @auth
 
-                @if(Auth::user()->role === 'employee')
                 <x-navlink url="/bookmarks" :active="request()->is('bookmarks')" :mobile="true">
                     Saved Jobs
                 </x-navlink>
-                @endif
 
                 <x-navlink url="/dashboard" :active="request()->is('dashboard')" icon="gauge" :mobile="true">
                     Dashboard

@@ -76,48 +76,57 @@
 
             @auth
                 @if(auth()->user()->id != $job->user_id)
-                    <div class="grid grid-cols-2 gap-4">
-                        @if(!\App\Models\Applicant::where('user_id', auth()->id())->where('job_id', $job->id)->exists())
-                            <div x-data="{ open: false }" id="applicant-form">
-                                <button @click="open = true" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
-                                    Apply Now
-                                </button>
+                    @if(auth()->user()->role === 'employee')
+                        <div class="grid grid-cols-2 gap-4">
+                            @if(!\App\Models\Applicant::where('user_id', auth()->id())->where('job_id', $job->id)->exists())
+                                <div x-data="{ open: false }" id="applicant-form">
+                                    <button @click="open = true" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+                                        Apply Now
+                                    </button>
+                
+                                    <div x-cloak x-show="open" class="fixed inset-0 flex items-center justify-center bg-transparent">
+                                        <div @click.away="open = false" class="bg-white p-6 rounded-lg shadow-md w-full max-w-md border border-black-200">
+                                            <h3 class="text-lg font-semibold mb-4">
+                                                Apply for {{$job->title}}
+                                            </h3>
+                                            <form method="POST" action="{{route('applicants.store' , $job->id)}}" enctype="multipart/form-data">
+                                                @csrf
+                                                <x-input.text label="Full Name" id="full_name" name="full_name" :required="true" placeholder="Full Name"/>
+                
+                                                <x-input.text label="Phone Number" id="contact_phone" name="contact_phone" placeholder="Phone Number"/>
+                
+                                                <x-input.text label="Email Address" id="contact_email" name="contact_email" :required="true" placeholder="Email Address"/>
+                
+                                                <x-input.text-area label="Remark" id="message" rows="2" name="message" placeholder="Enter Your Message For The Company" />
+                
+                                                <x-input.text label="Location" id="location" name="location" placeholder="Location"/>
+                
+                                                <x-input.file label="Upload Your Resume(pdf)" id="resume_path" name="resume_path" :required="true" />
             
-                                <div x-cloak x-show="open" class="fixed inset-0 flex items-center justify-center bg-transparent">
-                                    <div @click.away="open = false" class="bg-white p-6 rounded-lg shadow-md w-full max-w-md border border-black-200">
-                                        <h3 class="text-lg font-semibold mb-4">
-                                            Apply for {{$job->title}}
-                                        </h3>
-                                        <form method="POST" action="{{route('applicants.store' , $job->id)}}" enctype="multipart/form-data">
-                                            @csrf
-                                            <x-input.text label="Full Name" id="full_name" name="full_name" :required="true" placeholder="Full Name"/>
-            
-                                            <x-input.text label="Phone Number" id="contact_phone" name="contact_phone" placeholder="Phone Number"/>
-            
-                                            <x-input.text label="Email Address" id="contact_email" name="contact_email" :required="true" placeholder="Email Address"/>
-            
-                                            <x-input.text-area label="Remark" id="message" rows="2" name="message" placeholder="Enter Your Message For The Company" />
-            
-                                            <x-input.text label="Location" id="location" name="location" placeholder="Location"/>
-            
-                                            <x-input.file label="Upload Your Resume(pdf)" id="resume_path" name="resume_path" :required="true" />
-        
-                                            <button type="button" @click="open = false" class="mr-3 ml-40 bg-gray-300 hover:bg-gray-400 text-black px-2 py-2 rounded-md">Cancel</button>
-            
-                                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-2 rounded-md">Submit Application</button>
-                                        </form>
+                                                <button type="button" @click="open = false" class="mr-3 ml-40 bg-gray-300 hover:bg-gray-400 text-black px-2 py-2 rounded-md">Cancel</button>
+                
+                                                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-2 rounded-md">Submit Application</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @else
-                            <button type="button" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium text-indigo-700 bg-indigo-200">
-                                Already Applied
-                            </button>
-                        @endif
-                        <a href="mailto:{{ $job->contact_email }}" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer bg-gray-300 hover:bg-gray-400">
-                            Send An Email To The Company
-                        </a>
-                    </div>
+                            @else
+                                <button type="button" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium text-indigo-700 bg-indigo-200">
+                                    Already Applied
+                                </button>
+                            @endif
+                            <a href="mailto:{{ $job->contact_email }}" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer bg-gray-300 hover:bg-gray-400">
+                                Send An Email To The Company
+                            </a>
+                        </div>
+                    @else
+                        {{-- Company user views another company's job post --}}
+                        <div class="flex justify-end">
+                            <a href="mailto:{{ $job->contact_email }}" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer bg-gray-300 hover:bg-gray-400">
+                                Send An Email To The Company
+                            </a>
+                        </div>
+                    @endif
                 @else
                     <div x-data="{ opened: false }">
                         <button @click="opened = true" class="w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer bg-gray-300 hover:bg-gray-400">
@@ -138,9 +147,9 @@
                 </a>
             @endauth
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+        {{-- <div class="bg-white p-6 rounded-lg shadow-md mt-6">
             <div id="map"></div>
-        </div>
+        </div> --}}
     </section>
     <aside class="bg-white rounded-lg shadow-md p-3">
         <h3 class="text-xl text-center mb-4 font-bold">

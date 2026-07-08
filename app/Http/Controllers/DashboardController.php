@@ -16,7 +16,8 @@ class DashboardController extends Controller
 
         if ($user->role === 'company') {
             $jobs = Job::where('user_id', $user->id)->with('applicants')->get();
-            return view('dashboard.index', compact('user', 'jobs'));
+            $bookmarks = $user->bookmarkedJobs()->get();
+            return view('dashboard.index', compact('user', 'jobs', 'bookmarks'));
         } else {
             // Employee user: load their job applications and saved/bookmarked jobs
             $applications = Applicant::where('user_id', $user->id)->with('job')->get();

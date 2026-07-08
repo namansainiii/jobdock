@@ -28,13 +28,12 @@
         </div>
 
         <!-- Right Pane: Listings or Employee View -->
-        <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-150 w-full md:w-2/3 @if($user->role === 'company') md:h-full md:flex md:flex-col @endif">
+        <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-150 w-full md:w-2/3 @if($user->role === 'company') md:h-full md:overflow-y-auto md:pr-4 @endif">
             @if($user->role === 'company')
-                <h3 class="h3 text-3xl text-center font-bold mb-4">
+                <h3 class="h3 text-3xl text-center font-bold mb-6 border-b border-gray-100 pb-4">
                     My Job Listings
                 </h3>
-                <div class="md:flex-1 md:overflow-y-auto md:pr-4 space-y-4">
-                    @forelse($jobs as $job)
+                @forelse($jobs as $job)
                 <div class="border-b border-gray-200 py-6 last:border-b-0">
                     <div class="flex justify-between items-center">
                         <div>
@@ -344,7 +343,6 @@
                 @empty
                 <p class="text-gray-700 text-center mt-10">YOU HAVE NO JOB LISTINGS</p>
                 @endforelse
-                </div>
             @else
                 <!-- Employee/Job Seeker dashboard view -->
                 <div class="mb-8">
