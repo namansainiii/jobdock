@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="div gg-white rounded-lg shadow-md w-full md:max-w-xl mx-auto mt-12 py-12 p-8">
+    <div class="div bg-white rounded-lg shadow-md w-full md:max-w-xl mx-auto mt-12 py-12 p-8">
         <h2 class="h2 text-4xl text-center font-bold mb-4">Login</h2>
         <form method="POST" action="{{ route('login.authenticate') }}">
             @csrf
