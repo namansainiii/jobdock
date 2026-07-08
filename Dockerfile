@@ -33,5 +33,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 
 RUN apt-get install -y nodejs
 
-CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
 
