@@ -39,11 +39,12 @@
         <div class="mb-2">{{$slot}}</div>
     </main>
     <script src="{{ asset('script/script.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
 </body>
 </html>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
+
 
 {{-- 
 <!DOCTYPE html>

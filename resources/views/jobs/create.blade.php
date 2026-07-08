@@ -50,9 +50,9 @@
         
                             <x-input.text label="Longitude" id="longitude" name="longitude"  width="width:600px;" readonly hidden/>
                         </div>
-                        {{-- <div>                    
+                        <div>                    
                             <div id="map" class="w-full rounded border shadow mt-4" style="height:212px; width:350px;"></div>
-                        </div> --}}
+                        </div>
 
                     </div>
 
