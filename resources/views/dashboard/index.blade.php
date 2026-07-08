@@ -1,6 +1,7 @@
 <x-layout>
-    <section class="max-w-8xl mx-auto flex flex-col md:flex-row gap-4 px-4 py-6">
-        <div class="bg-white p-8 rounded-lg shadow-md w-full mx-auto ">
+    <section class="max-w-8xl mx-auto flex flex-col md:flex-row items-start gap-6 px-4 py-6 @if($user->role === 'company') md:h-[calc(100vh-140px)] @endif">
+        <!-- Left Pane: Profile Card -->
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-150 w-full md:w-1/3 md:sticky md:top-6">
             <h3 class="h3 text-3xl text-center font-bold mb-4">
                 My Profile
             </h3>
@@ -21,16 +22,19 @@
 
                 <x-input.file label="Upload Avatar" id="avatar" name="avatar" />
                 
-                <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 border rounded hover:bg-green-600 focus:outline-none">Save</button>
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 border rounded hover:bg-green-600 focus:outline-none transition-all font-semibold">Save</button>
 
             </form>
         </div>
-        <div class="bg-white p-8 rounded-lg shadow-md w-full mx-auto">
+
+        <!-- Right Pane: Listings or Employee View -->
+        <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-150 w-full md:w-2/3 @if($user->role === 'company') md:h-full md:flex md:flex-col @endif">
             @if($user->role === 'company')
                 <h3 class="h3 text-3xl text-center font-bold mb-4">
                     My Job Listings
                 </h3>
-                @forelse($jobs as $job)
+                <div class="md:flex-1 md:overflow-y-auto md:pr-4 space-y-4">
+                    @forelse($jobs as $job)
                 <div class="border-b border-gray-200 py-6 last:border-b-0">
                     <div class="flex justify-between items-center">
                         <div>
@@ -340,6 +344,7 @@
                 @empty
                 <p class="text-gray-700 text-center mt-10">YOU HAVE NO JOB LISTINGS</p>
                 @endforelse
+                </div>
             @else
                 <!-- Employee/Job Seeker dashboard view -->
                 <div class="mb-8">
@@ -380,35 +385,6 @@
                     </div>
                     @empty
                     <p class="text-gray-700 text-center mt-6">You have not applied for any jobs yet.</p>
-                    @endforelse
-                </div>
-
-                <div>
-                    <h3 class="h3 text-3xl text-center font-bold mb-4">
-                        My Saved Jobs
-                    </h3>
-                    @forelse($bookmarks as $job)
-                    <div class="flex justify-between items-center border-b border-gray-200 py-4">
-                        <div>
-                            <h4 class="text-xl font-semibold">
-                                <a href="{{ route('jobs.show', $job->id) }}" class="hover:underline text-blue-900">
-                                    {{ $job->title }}
-                                </a>
-                            </h4>
-                            <p class="text-gray-600">{{ $job->company_name }} &bull; {{ $job->city }}, {{ $job->state }}</p>
-                        </div>
-                        <div>
-                            <form method="POST" action="{{ route('bookmarks.destroy', $job->id) }}" onsubmit="return confirm('Are you sure you want to remove this bookmark?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm">
-                                    Remove
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    @empty
-                    <p class="text-gray-700 text-center mt-6">You have no saved jobs.</p>
                     @endforelse
                 </div>
             @endif
