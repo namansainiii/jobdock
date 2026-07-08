@@ -74,9 +74,32 @@ class ApplicantController extends Controller
             Storage::disk('public')->delete($applicant->resume_path);
         }
 
+        $jobId = $applicant->job_id;
         $applicant->delete();
             
-        return redirect()->route('dashboard.index')->with('success' , 'Applicant Deleted Successfully!');
+        return redirect()->back()
+            ->with('success', 'Applicant Deleted Successfully!')
+            ->with('open_modal_job_id', $jobId);
+    }
 
+    public function updateStatus(Request $request, $id): RedirectResponse {
+        $applicant = Applicant::findOrFail($id);
+        $user = auth()->user();
+
+        // Check if this company owns the job listing
+        if ($user->role !== 'company' || $applicant->job->user_id !== $user->id) {
+            abort(403, 'Unauthorized.');
+        }
+
+        $validatedData = $request->validate([
+            'status' => 'required|string|in:Applied,Reviewing,Shortlisted,Interviewing,Rejected'
+        ]);
+
+        $applicant->update(['status' => $validatedData['status']]);
+
+        return redirect()->back()
+            ->with('success', 'Applicant status updated successfully!')
+            ->with('open_modal_job_id', $applicant->job_id)
+            ->with('open_drawer_id', $applicant->id);
     }
 }

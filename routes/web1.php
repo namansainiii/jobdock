@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function(){
     Route::delete('/bookmarks/{job}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
     Route::post('jobs/{job}/apply', [ApplicantController::class, 'store'])->name('applicants.store');
     Route::delete('applicants/{applicant}', [ApplicantController::class, 'destroy'])->name('applicants.destroy');
+    Route::patch('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.status');
 
 
 });
