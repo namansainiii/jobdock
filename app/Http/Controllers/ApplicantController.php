@@ -56,6 +56,19 @@ class ApplicantController extends Controller
     public function destroy($id): RedirectResponse
     {
         $applicant = Applicant::findOrFail($id);
+        $user = auth()->user();
+
+        if ($user->role === 'company') {
+            // Check if this company owns the job listing
+            if ($applicant->job->user_id !== $user->id) {
+                abort(403, 'Unauthorized.');
+            }
+        } else {
+            // Check if this employee owns the application
+            if ($applicant->user_id !== $user->id) {
+                abort(403, 'Unauthorized.');
+            }
+        }
 
         if($applicant->resume_path){
             Storage::disk('public')->delete($applicant->resume_path);

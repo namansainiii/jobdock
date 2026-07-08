@@ -15,18 +15,21 @@
 
                     @auth
 
+                    @if(Auth::user()->role === 'employee')
                     <x-navlink url="/bookmarks" :active="request()->is('bookmarks')">
                         Saved Jobs
                     </x-navlink>
+                    @endif
 
                     {{-- <x-navlink url="/dashboard" :active="request()->is('dashboard')" icon="gauge">
                         Dashboard
                     </x-navlink> --}}
 
-
+                    @if(Auth::user()->role === 'company')
                     <x-button-link url="/jobs/create" icon="edit">
                         Create Job
                     </x-button-link>
+                    @endif
 
 
                     <div class="flex items-center space-x-3">
@@ -69,9 +72,11 @@
 
                 @auth
 
+                @if(Auth::user()->role === 'employee')
                 <x-navlink url="/bookmarks" :active="request()->is('bookmarks')" :mobile="true">
                     Saved Jobs
                 </x-navlink>
+                @endif
 
                 <x-navlink url="/dashboard" :active="request()->is('dashboard')" icon="gauge" :mobile="true">
                     Dashboard
@@ -79,9 +84,11 @@
 
                 <x-logout-button />
 
+                @if(Auth::user()->role === 'company')
                 <x-button-link url="/jobs/create" icon="edit" :block="true">
                     Create Job
                 </x-button-link>
+                @endif
 
                 @else
 

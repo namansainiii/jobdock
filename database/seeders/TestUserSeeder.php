@@ -15,11 +15,22 @@ class TestUserSeeder extends Seeder
      */
     public function run(): void
     {
+        // 1. Company User (Employer)
         User::create([
-            'name' => 'Test User',
+            'name' => 'Test Company',
             'email' => 'test@test.com',
             'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('12345678')
+            'password' => Hash::make('12345678'),
+            'role' => 'company'
+        ]);
+
+        // 2. Employee User (Job Seeker)
+        User::create([
+            'name' => 'Test Seeker',
+            'email' => 'seeker@test.com',
+            'email_verified_at' => Carbon::now(),
+            'password' => Hash::make('12345678'),
+            'role' => 'employee'
         ]);
     }
 }

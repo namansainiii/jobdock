@@ -42,10 +42,9 @@ class JobController extends Controller
     }
 
     public function create(){
-
-        // if(!Auth::check()){
-        //     return redirect()->route('login');
-        // }
+        if (auth()->user()->role !== 'company') {
+            abort(403, 'Unauthorized. Only employers can create jobs.');
+        }
         return view('jobs.create');
     }
 
@@ -60,6 +59,9 @@ class JobController extends Controller
 
 
     public function store(Request $request){
+        if (auth()->user()->role !== 'company') {
+            abort(403, 'Unauthorized. Only employers can create jobs.');
+        }
         // $title = $request->input('title');
         // $description = $request->input('description');
 

@@ -5,6 +5,15 @@
             @csrf
             <x-input.text id="name" name="name" placeholder="Enter Your Name" />
             <x-input.text id="email" type="email" name="email" placeholder="Enter Email Address" />
+            <x-input.select 
+                id="role" 
+                name="role" 
+                label="Register As" 
+                :options="[
+                    'employee' => 'Job Seeker (Employee)',
+                    'company' => 'Employer (Company)'
+                ]" 
+            />
             <x-input.text id="password" type="password" name="password" placeholder="Type Your Password" />
             <x-input.text id="password_confirmation" type="password" name="password_confirmation" placeholder="Re-Type Your Password"/>
             <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white w-full text-center p-2 rounded focus:outline-none">Register</button>
