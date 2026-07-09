@@ -1,12 +1,4 @@
-{{-- @extends('layout')
-@section('content') --}}
 <x-layout>
-  {{-- Search bar banner --}}
-  <div style="margin-top: -15px;" class="bg-blue-900 h-24 mb-4 flex justify-center items-center">
-    <x-search></x-search>
-  </div>
-
-  {{-- Back button --}}
   @php
     $hasFilters = request()->hasAny(['keywords', 'location', 'job_type', 'min_salary']);
     $activeJobTypes = request()->input('job_type', []);
@@ -14,14 +6,17 @@
     $activeFilterCount = count($activeJobTypes) + ($activeMinSalary !== '' ? 1 : 0);
   @endphp
 
-  @if($hasFilters)
-    <a href="{{ route('jobs.index') }}" style="background: gray;" class="hover:bg-gray-600 text-white px-4 py-2 rounded mb-4 inline-block ml-4">
-      <i class="fa fa-arrow-left mr-1"></i> Clear All Filters
-    </a>
-  @endif
+  <div class="max-w-7xl mx-auto px-4 pb-12">
+    @if($hasFilters)
+      <div class="mb-6 flex justify-start">
+        <a href="{{ route('jobs.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-red-50 hover:text-red-700 text-gray-700 text-sm font-semibold rounded-xl transition-all shadow-sm">
+          <i class="fa-solid fa-circle-xmark"></i> Clear All Active Filters
+        </a>
+      </div>
+    @endif
 
-  {{-- Main layout: sidebar + job grid --}}
-  <div class="flex flex-col md:flex-row gap-6 px-2">
+    {{-- Main layout: sidebar + job grid --}}
+    <div class="flex flex-col md:flex-row gap-6">
 
     {{-- ===== FILTER SIDEBAR ===== --}}
     <aside class="w-full md:w-64 flex-shrink-0">
@@ -143,5 +138,5 @@
     </div>
 
   </div>
+  </div>{{-- end max-w-7xl --}}
 </x-layout>
-{{-- @endsection --}}

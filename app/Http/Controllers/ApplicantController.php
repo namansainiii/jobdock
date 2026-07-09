@@ -16,6 +16,11 @@ class ApplicantController extends Controller
     //route: jobs/{job}/apply
     public function store(Request $request , Job $job): RedirectResponse {
 
+        // Check if the job listing is open/active
+        if ($job->status !== 'active') {
+            return redirect()->back()->with('error', 'Applications are not open for this job listing.');
+        }
+
         //check applicant has already apply 
         $existing_applicant = Applicant::where('job_id' , $job->id)->where('user_id' , auth()->id())->exists();
         if($existing_applicant){
@@ -23,13 +28,15 @@ class ApplicantController extends Controller
         }
 
         $validatedData = $request->validate([
-            'full_name'     => 'required|string',
-            'contact_phone' => 'nullable|string',
-            'contact_email' => 'required|string|email',
-            'message'       => 'nullable|string',
-            'location'      => 'nullable|string',
+            'full_name'        => 'required|string',
+            'contact_phone'    => 'nullable|string',
+            'contact_email'    => 'required|string|email',
+            'message'          => 'nullable|string',
+            'location'         => 'nullable|string',
+            'experience_level' => 'nullable|string',
+            'education_level'  => 'nullable|string',
             // resume is nullable here — we handle it manually below
-            'resume_path'   => 'nullable|file|mimes:pdf|max:5120',
+            'resume_path'      => 'nullable|file|mimes:pdf|max:5120',
         ]);
 
         // --- Determine which resume to use ---

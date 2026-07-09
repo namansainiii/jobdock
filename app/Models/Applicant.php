@@ -19,7 +19,9 @@ class Applicant extends Model
         'message',
         'location',
         'resume_path',
-        'status'
+        'status',
+        'experience_level',
+        'education_level'
     ];
 
     public function job(): BelongsTo {

@@ -38,7 +38,13 @@ class Job extends Model
         'company_logo' , 
         'company_website',
         'user_id',
-        'status'
+        'status',
+        'experience_level',
+        'education_level',
+        'industry',
+        'salary_max',
+        'vacancies',
+        'application_deadline',
     ];
 
     /**

@@ -354,6 +354,18 @@
                                                     <span class="text-gray-800 font-semibold text-sm">{{ $applicant->location }}</span>
                                                 </div>
                                                 @endif
+                                                @if($applicant->experience_level)
+                                                <div>
+                                                    <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Experience Level</span>
+                                                    <span class="text-gray-800 font-semibold text-sm">💼 {{ $applicant->experience_level }}</span>
+                                                </div>
+                                                @endif
+                                                @if($applicant->education_level)
+                                                <div>
+                                                    <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Education Level</span>
+                                                    <span class="text-gray-800 font-semibold text-sm">🎓 {{ $applicant->education_level }}</span>
+                                                </div>
+                                                @endif
                                             </div>
 
                                             @if($applicant->message)

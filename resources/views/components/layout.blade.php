@@ -19,13 +19,24 @@
     <x-header/>
 
     @if(request()->is('/'))
-    <h1 class="text-center text-3xl border p-3 bg-blue-900 text-white">Welcome to JobDock</h1>
-    {{-- <x-hero title="find your dream job"/> --}}
-    <x-hero/>
-    {{-- <x-top-banner/> --}}
+        <x-hero/>
+    @elseif(request()->is('jobs') || request()->is('jobs/search'))
+        {{-- Show a combined search hero header on the search/index list page --}}
+        <div class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 py-8 px-4 text-center text-white mb-6">
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Find Your Next Role</h1>
+            <p class="text-blue-200 text-sm mb-6">Explore the best job opportunities curated just for you.</p>
+            <div class="max-w-4xl mx-auto">
+                <x-search/>
+            </div>
+        </div>
+    @elseif(request()->is('bookmarks'))
+        <div class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 py-10 px-4 text-center text-white mb-6">
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Saved Jobs</h1>
+            <p class="text-blue-200 text-sm">Keep track of the opportunities you're interested in.</p>
+        </div>
+    @else
+        <x-top-banner/>
     @endif
-    {{-- <x-top-banner title="unlock your career potential"/> --}}
-    <x-top-banner/>
 
 
     {{-- <h1 class="text-red-500 text-4xl font-bold">Test</h1> --}}
@@ -38,7 +49,10 @@
         @endif
         <div class="mb-2">{{$slot}}</div>
     </main>
-    <script src="{{ asset('script/script.js') }}"></script>
+    <script>
+        // Fallback initMap to prevent "initMap is not a function" errors on pages without maps
+        window.initMap = window.initMap || function() {};
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
 </body>
 </html>
