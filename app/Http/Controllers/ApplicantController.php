@@ -21,32 +21,40 @@ class ApplicantController extends Controller
         if($existing_applicant){
             return redirect()->back()->with('error', 'you have already applied to this job');
         }
+
         $validatedData = $request->validate([
-            'full_name' => 'required|string',
+            'full_name'     => 'required|string',
             'contact_phone' => 'nullable|string',
             'contact_email' => 'required|string|email',
-            'message' => 'nullable|string',
-            'location' => 'nullable|string',
-            'resume_path' => 'required|file|mimes:pdf|max:2048',
+            'message'       => 'nullable|string',
+            'location'      => 'nullable|string',
+            // resume is nullable here — we handle it manually below
+            'resume_path'   => 'nullable|file|mimes:pdf|max:5120',
         ]);
 
-        //check for resume
-        if($request->hasFile('resume_path')){
-            //store the file and get path
-            $path = $request->file('resume_path')->store('resume' , 'public');
-
-            //add path to db
+        // --- Determine which resume to use ---
+        if ($request->hasFile('resume_path')) {
+            // A new file was uploaded — store it
+            $path = $request->file('resume_path')->store('resume', 'public');
             $validatedData['resume_path'] = $path;
+
+        } elseif ($request->input('use_saved_resume') && auth()->user()->resume_path) {
+            // Use the profile saved resume path (S3 key)
+            $validatedData['resume_path'] = auth()->user()->resume_path;
+
+        } else {
+            // No resume provided at all
+            return redirect()->back()->with('error', 'Please upload a resume or use your saved profile resume.');
         }
 
         $application = new Applicant($validatedData);
-        $application->job_id = $job->id;
+        $application->job_id  = $job->id;
         $application->user_id = auth()->id();
         $application->save();
 
         //send email to owner
         Mail::to($job->user->email)->send(new JobApplied($application , $job));
-        // return redirect()->route('jobs.show')->with('success' , 'Job Applied Successfully!');
+
         return redirect()->back()->with('success' , 'Job Applied Successfully!');
 
     }

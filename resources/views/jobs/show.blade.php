@@ -89,22 +89,56 @@
                                             <h3 class="text-lg font-semibold mb-4">
                                                 Apply for {{$job->title}}
                                             </h3>
-                                            <form method="POST" action="{{route('applicants.store' , $job->id)}}" enctype="multipart/form-data">
+                                            <form method="POST" action="{{route('applicants.store' , $job->id)}}" enctype="multipart/form-data"
+                                                x-data="{ useSavedResume: {{ auth()->user()->resume_path ? 'true' : 'false' }} }">
                                                 @csrf
                                                 <x-input.text label="Full Name" id="full_name" name="full_name" :required="true" placeholder="Full Name"/>
-                
+                    
                                                 <x-input.text label="Phone Number" id="contact_phone" name="contact_phone" placeholder="Phone Number"/>
-                
+                    
                                                 <x-input.text label="Email Address" id="contact_email" name="contact_email" :required="true" placeholder="Email Address"/>
-                
+                    
                                                 <x-input.text-area label="Remark" id="message" rows="2" name="message" placeholder="Enter Your Message For The Company" />
-                
+                    
                                                 <x-input.text label="Location" id="location" name="location" placeholder="Location"/>
-                
-                                                <x-input.file label="Upload Your Resume(pdf)" id="resume_path" name="resume_path" :required="true" />
-            
+
+                                                {{-- Resume section --}}
+                                                <div class="mt-3 mb-3">
+                                                    <label class="block text-sm font-medium text-gray-700 mb-2">Resume</label>
+
+                                                    @if(auth()->user()->resume_path)
+                                                        {{-- Saved resume option --}}
+                                                        <div class="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-2">
+                                                            <i class="fas fa-file-pdf text-red-500"></i>
+                                                            <div class="flex-1 min-w-0">
+                                                                <p class="text-xs font-semibold text-gray-800">Profile Resume Available</p>
+                                                                <a href="{{ Storage::disk('s3')->url(auth()->user()->resume_path) }}" target="_blank" class="text-xs text-blue-600 hover:underline">Preview →</a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                                            <input type="checkbox" name="use_saved_resume" value="1"
+                                                                x-model="useSavedResume"
+                                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                                                            <span class="text-sm text-gray-700 font-medium">Use my saved profile resume</span>
+                                                        </label>
+
+                                                        {{-- File upload: only visible when not using saved resume --}}
+                                                        <div x-show="!useSavedResume" x-transition>
+                                                            <label class="block text-xs text-gray-500 mb-1">Or upload a different PDF:</label>
+                                                            <input type="file" id="resume_path" name="resume_path" accept=".pdf"
+                                                                :required="!useSavedResume"
+                                                                class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-gray-200 rounded-lg">
+                                                        </div>
+                                                    @else
+                                                        {{-- No saved resume — show required file upload --}}
+                                                        <input type="file" id="resume_path" name="resume_path" accept=".pdf" required
+                                                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-gray-200 rounded-lg">
+                                                        <p class="text-xs text-gray-400 mt-1">Save a resume to your profile to reuse it instantly!</p>
+                                                    @endif
+                                                </div>
+                    
                                                 <button type="button" @click="open = false" class="mr-3 ml-40 bg-gray-300 hover:bg-gray-400 text-black px-2 py-2 rounded-md">Cancel</button>
-                
+                    
                                                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-2 rounded-md">Submit Application</button>
                                             </form>
                                         </div>

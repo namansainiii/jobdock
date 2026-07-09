@@ -23,11 +23,14 @@ This document serves as our project roadmap. We will use this checklist to imple
 *Allows employees to save a resume to their profile and reuse it instantly when applying to new jobs.*
 *   **Target User:** Employees (Job Seekers)
 *   **Priority:** Medium-High
-*   **Status:** `[ ] Not Started`
-*   **Implementation Steps:**
-    *   Add a `resume_path` string column to the `users` table.
-    *   Update the **My Profile** settings form on the dashboard to allow uploading and deleting a profile resume.
-    *   In the **Job Apply** form, check if a profile resume exists. If yes, show a "Use Saved Resume" checkbox alongside the file upload input.
+*   **Status:** `[x] Completed`
+*   **Implementation Details:**
+    *   Added `resume_path` nullable string column to the `users` table via migration.
+    *   Updated `ProfileController@update` to handle PDF upload to S3 (`resumes/` folder) and added a new `deleteResume` method.
+    *   Added `DELETE /profile/resume` route (`profile.resume.delete`) in `web1.php`.
+    *   Updated the **My Profile** dashboard panel to show the saved resume status, a "View" link, a "Replace" upload input, and a "Remove Saved Resume" button.
+    *   Updated the **Apply Now** modal: if a profile resume exists, shows a "Use my saved profile resume" checkbox (checked by default) with an Alpine.js-toggled file upload for when the user wants to submit a different one.
+    *   Updated `ApplicantController@store` to use the saved resume path when `use_saved_resume` is submitted and no file is uploaded.
 
 ---
 
@@ -35,12 +38,13 @@ This document serves as our project roadmap. We will use this checklist to imple
 *Enhances the job search page with filters for types, salary, and active tags.*
 *   **Target User:** Employees (Job Seekers)
 *   **Priority:** Medium
-*   **Status:** `[ ] Not Started`
-*   **Implementation Steps:**
-    *   Add sidebar filter components on the `/jobs` page:
-        *   Checkbox list for Job Types (`Full-time`, `Part-time`, `Contract`, `Internship`, `Remote`).
-        *   Minimum Salary numeric filter/slider.
-    *   Update `JobController@search` logic to dynamically apply these filters to the database query.
+*   **Status:** `[x] Completed`
+*   **Implementation Details:**
+    *   Added a sticky filter sidebar to the `/jobs` page with Job Type checkboxes (Full-time, Part-time, Contract, Internship, Remote) and a Minimum Salary `$` number input.
+    *   Checkboxes auto-submit the filter form on change via `onchange`; salary uses an "Apply Filters" button.
+    *   Active filter count badge shown on the sidebar header.
+    *   Updated `JobController@index` to delegate to `search()` when any filter params are present.
+    *   Updated `JobController@search` to apply `whereIn('job_type', ...)` and `where('salary', '>=', ...)` filters dynamically. Filters persist across pagination via `withQueryString()`.
 
 ---
 

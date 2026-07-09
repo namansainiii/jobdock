@@ -28,17 +28,15 @@ class JobController extends Controller
 
     use AuthorizesRequests;
 
-    public function index()
+    public function index(Request $request)
     {
-        // $value = session()->get('test');
-        // dd($value);
+        // If any filter/search params present, delegate to search()
+        if ($request->hasAny(['keywords', 'location', 'job_type', 'min_salary'])) {
+            return $this->search($request);
+        }
 
-        // $jobs = Job::all();
-        $jobs = Job::oldest()->paginate(6);
-
-        // return view('jobs.index', compact('jobs'));
-        return view('jobs.index')->with('jobs', $jobs);  
-
+        $jobs = Job::oldest()->paginate(9);
+        return view('jobs.index')->with('jobs', $jobs);
     }
 
     public function create(){
@@ -49,12 +47,7 @@ class JobController extends Controller
     }
 
     public function show(Job $job){
-        // $jobs = Job::all();
-        // return "job id $job";
-
         return view('jobs.show')->with('job', $job);  
-        // return view('jobs.show')->compact('job');  
-
     }
 
 
@@ -62,10 +55,6 @@ class JobController extends Controller
         if (auth()->user()->role !== 'company') {
             abort(403, 'Unauthorized. Only employers can create jobs.');
         }
-        // $title = $request->input('title');
-        // $description = $request->input('description');
-
-        // dd($request->file('company_logo'));
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -89,45 +78,28 @@ class JobController extends Controller
             'longitude' => 'nullable|numeric',
         ]);
 
-
-        //Hardcoded user Id
-        // $validatedData['user_id'] = 7;
-
         $validatedData['user_id'] = auth()->user()->id;
 
         //check for image
         if($request->hasFile('company_logo')){
-            //store the file and get path
             $path = $request->file('company_logo')->store('logos' , 'public');
-
-            //add path to db
             $validatedData['company_logo'] = $path;
         }
 
-        //submit to database
         Job::create($validatedData);
 
-        // Job::create([
-        //     'title' => $validatedData['title'], 
-        //     'description' => $validatedData['description']
-        // ]);
-
         return redirect()->route('jobs.index')->with('success' , 'Job Added Successfully!');
-        // return "Title: $title , description: $description";
     }
 
     //to show the edit page of job 
     public function edit(Job $job):View
     {
         $this->authorize('update' , $job);
-
         return view('jobs.edit')->with('job' , $job);
     }
 
     public function update(Request $request, Job $job):RedirectResponse
     {
-          //check if user is Authorized
-          //with this form will be shown through url but while saving error will be given 
           $this->authorize('update' , $job);
 
           $validatedData = $request->validate([
@@ -153,50 +125,32 @@ class JobController extends Controller
 
         //check for image
         if($request->hasFile('company_logo')){
-            //Delete old images 
-            // Storage::disk('public')->delete($job->company_logo);
-
             if($job->company_logo){
                 Storage::disk('public')->delete($job->company_logo);
             }
-
-
-            //store the file and get path
             $path = $request->file('company_logo')->store('logos' , 'public');
-
-            //add path to db
             $validatedData['company_logo'] = $path;
         }
 
-        //submit to database
         $job->update($validatedData);
 
-        //check if request is from dashobard
-        // if(request()->query('from') == 'dashboard'){
         if($request->from == 'dashboard'){
             return redirect()->route('dashboard.index')->with('success' , 'Job Updated Successfully!');
         }else{
             return redirect()->route('jobs.index')->with('success' , 'Job Updated Successfully!');
         }
-
     }
 
     public function destroy(Job $job):RedirectResponse
     {
-
-        //check if user is Authorized
-        //with this form will be shown through url but while saving error will be given 
         $this->authorize('delete' , $job);
 
-        //check the logo if present then delete
         if($job->company_logo){
             Storage::disk('public')->delete($job->company_logo);
         }
 
         $job->delete();
 
-
-        //check if request is from dashobard
         if(request()->query('from') == 'dashboard'){
             return redirect()->route('dashboard.index')->with('success' , 'Job Deleted Successfully!');
         }else{
@@ -204,12 +158,15 @@ class JobController extends Controller
         }
     }
 
-    public function search(Request $request): View{
-        $keywords = strtolower($request->input('keywords'));
-        $location = strtolower($request->input('location'));
-    
+    public function search(Request $request): View
+    {
+        $keywords  = strtolower($request->input('keywords', ''));
+        $location  = strtolower($request->input('location', ''));
+        $jobTypes  = $request->input('job_type', []);     // array of selected types
+        $minSalary = $request->input('min_salary');        // numeric or null
+
         $query = Job::query();
-    
+
         // Search by keywords
         if ($keywords) {
             $query->where(function ($q) use ($keywords) {
@@ -218,7 +175,7 @@ class JobController extends Controller
                   ->orWhereRaw('LOWER(tags) LIKE ?', ['%' . $keywords . '%']);
             });
         }
-    
+
         // Search by location
         if ($location) {
             $query->where(function ($q) use ($location) {
@@ -228,10 +185,21 @@ class JobController extends Controller
                   ->orWhereRaw('LOWER(zipcode) LIKE ?', ['%' . $location . '%']);
             });
         }
-    
-        $jobs = $query->paginate(12);
-    
+
+        // Filter by job type (checkboxes — multi-select array)
+        if (!empty($jobTypes)) {
+            $query->whereIn('job_type', $jobTypes);
+        }
+
+        // Filter by minimum salary
+        if ($minSalary !== null && $minSalary !== '') {
+            $query->where('salary', '>=', (int) $minSalary);
+        }
+
+        $jobs = $query->oldest()->paginate(9)->withQueryString();
+
         return view('jobs.index')->with('jobs', $jobs);
     }
  
 }
+

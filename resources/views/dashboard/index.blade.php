@@ -21,11 +21,53 @@
                 <x-input.text label="Email" id="email" type="email" name="email" value="{{$user->email}}" />
 
                 <x-input.file label="Upload Avatar" id="avatar" name="avatar" />
+
+                {{-- Profile Resume Section --}}
+                <div class="mt-4 mb-3">
+                    <p class="block text-sm font-medium text-gray-700 mb-1">Profile Resume (PDF)</p>
+
+                    @if($user->resume_path)
+                        {{-- Resume exists: show file info + delete button --}}
+                        <div class="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-2">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <i class="fas fa-file-pdf text-red-500 text-lg flex-shrink-0"></i>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-semibold text-gray-800 truncate">Resume Saved</p>
+                                    <a href="{{ Storage::disk('s3')->url($user->resume_path) }}" target="_blank" class="text-xs text-blue-600 hover:underline">View current resume →</a>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2">Active</span>
+                        </div>
+
+                        {{-- Upload a new one to replace --}}
+                        <label class="block text-xs text-gray-500 mb-1">Replace with a new PDF:</label>
+                        <input type="file" id="resume_path" name="resume_path" accept=".pdf"
+                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-gray-200 rounded-lg">
+                    @else
+                        {{-- No resume: show upload input --}}
+                        <label class="block text-xs text-gray-400 mb-1">No resume saved yet. Upload a PDF (max 5MB):</label>
+                        <input type="file" id="resume_path" name="resume_path" accept=".pdf"
+                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-gray-200 rounded-lg">
+                    @endif
+                </div>
                 
                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 border rounded hover:bg-green-600 focus:outline-none transition-all font-semibold">Save</button>
 
             </form>
+
+            {{-- Delete resume form (outside the main form, separate POST) --}}
+            @if($user->resume_path)
+                <form method="POST" action="{{ route('profile.resume.delete') }}" class="mt-2" onsubmit="return confirm('Remove your saved resume?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 py-1.5 px-4 rounded font-semibold text-sm transition-all">
+                        <i class="fas fa-trash-alt text-xs"></i>
+                        Remove Saved Resume
+                    </button>
+                </form>
+            @endif
         </div>
+
 
         <!-- Right Pane: Listings or Employee View -->
         <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-150 w-full md:w-2/3 @if($user->role === 'company') md:h-full md:overflow-y-auto md:pr-4 @endif">

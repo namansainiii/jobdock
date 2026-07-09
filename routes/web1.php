@@ -64,6 +64,7 @@ Route::resource('dashboard', DashboardController::class)->middleware('auth');
 // Route::post('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
 
 Route::put('/profile', [ProfileController::class , 'update'])->name('profile.update')->middleware('auth');
+Route::delete('/profile/resume', [ProfileController::class, 'deleteResume'])->name('profile.resume.delete')->middleware('auth');
 
 Route::middleware('auth')->group(function(){
     Route::get('/bookmarks', [BookmarkController::class , 'index'])->name('bookmarks.index');

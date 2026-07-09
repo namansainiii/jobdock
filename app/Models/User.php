@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Applicant;
 
 
-#[Fillable(['name', 'email', 'password', 'avatar', 'role'])]
+#[Fillable(['name', 'email', 'password', 'avatar', 'resume_path', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
