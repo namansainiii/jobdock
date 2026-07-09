@@ -430,6 +430,26 @@
                                                     </form>
                                                 </div>
                                             </div>
+
+                                            <!-- Private Notes Card -->
+                                            <div class="pt-4 border-t border-gray-100">
+                                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2">Private Notes (Company Only)</span>
+                                                <form method="POST" action="{{ route('applicants.notes', $applicant->id) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <textarea 
+                                                        name="applicant_notes" 
+                                                        rows="3" 
+                                                        placeholder="Write private ratings, interview feedback, or applicant notes here..." 
+                                                        class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-xs resize-none bg-gray-50/50 hover:bg-white focus:bg-white"
+                                                    >{{ old('applicant_notes', $applicant->applicant_notes) }}</textarea>
+                                                    <div class="mt-2 flex justify-end">
+                                                        <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-1.5 px-3 rounded-lg text-xs transition-all shadow-sm flex items-center gap-1 cursor-pointer">
+                                                            <i class="fas fa-save text-[10px]"></i> Save Notes
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
 
                                         <!-- Detail Footer -->

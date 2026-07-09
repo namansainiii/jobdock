@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\JobApplied;
+use App\Mail\ApplicantMessage;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -117,4 +118,24 @@ class ApplicantController extends Controller
             ->with('open_modal_job_id', $applicant->job_id)
             ->with('open_drawer_id', $applicant->id);
     }
+
+    public function updateNotes(Request $request, $id): RedirectResponse {
+        $applicant = Applicant::findOrFail($id);
+        $user = auth()->user();
+
+        // Check if this company owns the job listing
+        if ($user->role !== 'company' || $applicant->job->user_id !== $user->id) {
+            abort(403, 'Unauthorized.');
+        }
+
+        $validatedData = $request->validate([
+            'applicant_notes' => 'nullable|string'
+        ]);
+
+        $applicant->update(['applicant_notes' => $validatedData['applicant_notes']]);
+
+        return redirect()->back()
+            ->with('success', 'Applicant evaluation notes updated successfully!')
+            ->with('open_modal_job_id', $applicant->job_id)
+            ->with('open_drawer_id', $applicant->id);
 }

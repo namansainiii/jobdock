@@ -21,16 +21,17 @@ class Applicant extends Model
         'resume_path',
         'status',
         'experience_level',
-        'education_level'
+        'education_level',
+        'applicant_notes'
     ];
 
     public function job(): BelongsTo {
-        return $this->BelongsTo(Job::class);
+        return $this->belongsTo(Job::class);
     }
 
 
     public function user(): BelongsTo {
-        return $this->beloBelongsTongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
     
 }

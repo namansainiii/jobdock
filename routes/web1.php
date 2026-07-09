@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function(){
     Route::post('jobs/{job}/apply', [ApplicantController::class, 'store'])->name('applicants.store');
     Route::delete('applicants/{applicant}', [ApplicantController::class, 'destroy'])->name('applicants.destroy');
     Route::patch('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.status');
+    Route::patch('applicants/{applicant}/notes', [ApplicantController::class, 'updateNotes'])->name('applicants.notes');
     Route::patch('jobs/{job}/status', [JobController::class, 'updateStatus'])->name('jobs.status');
 
 
