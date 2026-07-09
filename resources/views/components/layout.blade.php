@@ -35,7 +35,7 @@
             <p class="text-slate-300 text-sm">Keep track of the opportunities you're interested in.</p>
         </div>
     @else
-        <x-top-banner/>
+        <x-top-banner :title="$bannerTitle ?? 'Your Next Chapter Starts Here'" :subtitle="$bannerSubtitle ?? 'Connect with leading employers and find your dream career.'" />
     @endif
 
 
