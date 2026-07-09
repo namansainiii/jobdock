@@ -18,7 +18,7 @@ class HomeController extends Controller
         // session()->forget('test');
 
 
-        $jobs = Job::oldest()->limit(3)->get();
+        $jobs = Job::public()->oldest()->limit(3)->get();
         return view('pages.index')->with('jobs' , $jobs);
     }
 }
