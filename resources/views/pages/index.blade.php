@@ -28,7 +28,7 @@
         {{-- Show All Jobs CTA --}}
         <div class="flex justify-center">
             <a href="{{ route('jobs.index') }}" 
-                class="inline-flex items-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-250 text-sm">
+                class="inline-flex items-center gap-2 px-8 py-3.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-250 text-sm cursor-pointer">
                 <i class="fa-solid fa-list-check"></i>
                 Browse All Open Roles
             </a>

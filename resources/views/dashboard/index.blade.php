@@ -33,7 +33,7 @@
                                 <i class="fas fa-file-pdf text-red-500 text-lg flex-shrink-0"></i>
                                 <div class="min-w-0">
                                     <p class="text-sm font-semibold text-gray-800 truncate">Resume Saved</p>
-                                    <a href="{{ Storage::disk('s3')->url($user->resume_path) }}" target="_blank" class="text-xs text-blue-600 hover:underline">View current resume →</a>
+                                    <a href="{{ Storage::disk('s3')->url($user->resume_path) }}" target="_blank" class="text-xs text-amber-600 hover:underline">View current resume →</a>
                                 </div>
                             </div>
                             <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2">Active</span>
@@ -42,16 +42,16 @@
                         {{-- Upload a new one to replace --}}
                         <label class="block text-xs text-gray-500 mb-1">Replace with a new PDF:</label>
                         <input type="file" id="resume_path" name="resume_path" accept=".pdf"
-                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-gray-200 rounded-lg">
+                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 border border-gray-200 rounded-lg">
                     @else
                         {{-- No resume: show upload input --}}
                         <label class="block text-xs text-gray-400 mb-1">No resume saved yet. Upload a PDF (max 5MB):</label>
                         <input type="file" id="resume_path" name="resume_path" accept=".pdf"
-                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-gray-200 rounded-lg">
+                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 border border-gray-200 rounded-lg">
                     @endif
                 </div>
                 
-                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 border rounded hover:bg-green-600 focus:outline-none transition-all font-semibold">Save</button>
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-xl transition-all font-semibold cursor-pointer shadow-sm">Save</button>
 
             </form>
 
@@ -154,18 +154,18 @@
                                 @csrf
                                 @method('PATCH')
                                 <select name="status" onchange="this.form.submit()"
-                                    class="text-xs font-semibold border rounded-lg px-2 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all
+                                    class="text-xs font-semibold border rounded-lg px-2 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all
                                     {{ $job->status === 'active' ? 'bg-green-50 border-green-300 text-green-700' : ($job->status === 'draft' ? 'bg-yellow-50 border-yellow-300 text-yellow-700' : 'bg-red-50 border-red-300 text-red-700') }}">
                                     <option value="active"  {{ $job->status === 'active'  ? 'selected' : '' }}>🟢 Active</option>
                                     <option value="draft"   {{ $job->status === 'draft'   ? 'selected' : '' }}>🟡 Draft</option>
                                     <option value="closed"  {{ $job->status === 'closed'  ? 'selected' : '' }}>🔴 Closed</option>
                                 </select>
                             </form>
-                            <a href="{{ route('jobs.edit', ['job' => $job->id, 'from' => 'dashboard']) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition-all font-semibold shadow-sm">Edit</a>
+                            <a href="{{ route('jobs.edit', ['job' => $job->id, 'from' => 'dashboard']) }}" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded text-sm transition-all font-semibold shadow-sm cursor-pointer">Edit</a>
                             <form method="POST" action="{{ route('jobs.destroy' , $job->id) }}?from=dashboard" onsubmit="return confirm('Are you sure you want to delete this Job?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm transition-all font-semibold shadow-sm">
+                                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm transition-all font-semibold shadow-sm cursor-pointer">
                                     Delete
                                 </button>
                             </form>
@@ -178,11 +178,11 @@
                     statusFilter: 'All'
                 }">
                     <!-- Total Applicants Trigger Card -->
-                    <button @click="openModal = true" class="px-5 py-3 bg-blue-50 border border-blue-200 hover:bg-blue-100 text-blue-900 rounded-xl text-sm font-bold transition-all flex items-center gap-2.5 cursor-pointer shadow-sm">
-                        <i class="fas fa-users text-blue-500 text-lg"></i>
+                    <button @click="openModal = true" class="px-5 py-3 bg-amber-50 border border-amber-200 hover:bg-amber-100 text-amber-950 rounded-xl text-sm font-bold transition-all flex items-center gap-2.5 cursor-pointer shadow-sm">
+                        <i class="fas fa-users text-amber-600 text-lg"></i>
                         <span>Applicants:</span>
-                        <span class="bg-blue-600 text-white rounded-full px-2.5 py-0.5 text-xs font-extrabold">{{ $job->applicants->count() }}</span>
-                        <span class="text-xs text-blue-400 font-semibold">(Click to view)</span>
+                        <span class="bg-amber-600 text-white rounded-full px-2.5 py-0.5 text-xs font-extrabold">{{ $job->applicants->count() }}</span>
+                        <span class="text-xs text-amber-600 font-semibold">(Click to view)</span>
                     </button>
 
                     <!-- The Modal Container -->
@@ -244,7 +244,7 @@
                                     <div class="space-y-2">
                                         <span class="text-xs font-bold uppercase text-gray-400 tracking-wider">Filter Status</span>
                                         <div class="flex flex-wrap gap-1.5">
-                                            <button type="button" @click="statusFilter = 'All'" :class="statusFilter === 'All' ? 'bg-blue-600 text-white shadow-sm font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer">
+                                            <button type="button" @click="statusFilter = 'All'" :class="statusFilter === 'All' ? 'bg-amber-600 text-white shadow-sm font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer">
                                                 All ({{ $job->applicants->count() }})
                                             </button>
                                             <button type="button" @click="statusFilter = 'Applied'" :class="statusFilter === 'Applied' ? 'bg-gray-600 text-white shadow-sm font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer">
@@ -256,7 +256,7 @@
                                             <button type="button" @click="statusFilter = 'Shortlisted'" :class="statusFilter === 'Shortlisted' ? 'bg-green-600 text-white shadow-sm font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer">
                                                 Shortlisted ({{ $job->applicants->where('status', 'Shortlisted')->count() }})
                                             </button>
-                                            <button type="button" @click="statusFilter = 'Interviewing'" :class="statusFilter === 'Interviewing' ? 'bg-blue-600 text-white shadow-sm font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer">
+                                            <button type="button" @click="statusFilter = 'Interviewing'" :class="statusFilter === 'Interviewing' ? 'bg-amber-600 text-white shadow-sm font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer">
                                                 Interviewing ({{ $job->applicants->where('status', 'Interviewing')->count() }})
                                             </button>
                                             <button type="button" @click="statusFilter = 'Rejected'" :class="statusFilter === 'Rejected' ? 'bg-red-600 text-white shadow-sm font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer">
@@ -274,7 +274,7 @@
                                             <div 
                                                 x-show="statusFilter === 'All' || '{{ $applicant->status }}' === statusFilter"
                                                 @click="activeApplicantId = {{ $applicant->id }}"
-                                                :class="activeApplicantId === {{ $applicant->id }} ? 'border-blue-500 bg-blue-50/40 shadow-sm ring-1 ring-blue-500' : 'border-gray-200 hover:bg-gray-50'"
+                                                :class="activeApplicantId === {{ $applicant->id }} ? 'border-amber-500 bg-amber-50/40 shadow-sm ring-1 ring-amber-500' : 'border-gray-200 hover:bg-gray-50'"
                                                 class="p-4 border rounded-xl cursor-pointer transition-all duration-200 flex justify-between items-center"
                                             >
                                                 <div>
@@ -283,7 +283,7 @@
                                                     <span class="inline-block mt-2 px-2 py-0.5 rounded-full text-[10px] font-bold 
                                                         {{ $applicant->status === 'Shortlisted' ? 'bg-green-100 text-green-800' : '' }}
                                                         {{ $applicant->status === 'Reviewing' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                                        {{ $applicant->status === 'Interviewing' ? 'bg-blue-100 text-blue-800' : '' }}
+                                                        {{ $applicant->status === 'Interviewing' ? 'bg-amber-100 text-amber-800' : '' }}
                                                         {{ $applicant->status === 'Rejected' ? 'bg-red-100 text-red-800' : '' }}
                                                         {{ $applicant->status === 'Applied' ? 'bg-gray-100 text-gray-800' : '' }}
                                                     ">
@@ -312,20 +312,20 @@
                                         style="display: none;"
                                     >
                                         <!-- Detail Header -->
-                                        <div class="bg-blue-900 px-6 py-4 flex items-center justify-between">
+                                        <div class="bg-slate-900 px-6 py-4 flex items-center justify-between border-b border-slate-800">
                                             <div class="flex items-center gap-2">
                                                 <!-- Close Arrow back to list -->
-                                                <button @click="activeApplicantId = null" class="text-white hover:text-gray-200 p-1.5 hover:bg-white/10 rounded-lg transition-all focus:outline-none">
+                                                <button @click="activeApplicantId = null" class="text-white hover:text-amber-500 p-1.5 hover:bg-white/10 rounded-lg transition-all focus:outline-none cursor-pointer">
                                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                                                     </svg>
                                                 </button>
                                                 <div>
                                                     <h4 class="text-sm font-bold text-white">Applicant Profile</h4>
-                                                    <p class="text-[10px] text-blue-200">Inspect resume and submit changes.</p>
+                                                    <p class="text-[10px] text-slate-300">Inspect resume and submit changes.</p>
                                                 </div>
                                             </div>
-                                            <button @click="activeApplicantId = null" class="text-blue-300 hover:text-white text-xs font-bold tracking-wide uppercase focus:outline-none">
+                                            <button @click="activeApplicantId = null" class="text-slate-400 hover:text-amber-500 text-xs font-bold tracking-wide uppercase focus:outline-none cursor-pointer">
                                                 Close
                                             </button>
                                         </div>
@@ -340,7 +340,7 @@
                                             <div class="space-y-4 pt-4 border-t border-gray-100">
                                                 <div>
                                                     <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Email</span>
-                                                    <a href="mailto:{{ $applicant->contact_email }}" class="text-blue-600 hover:underline font-bold text-sm break-all">{{ $applicant->contact_email }}</a>
+                                                    <a href="mailto:{{ $applicant->contact_email }}" class="text-amber-600 hover:underline font-bold text-sm break-all">{{ $applicant->contact_email }}</a>
                                                 </div>
                                                 @if($applicant->contact_phone)
                                                 <div>
@@ -413,9 +413,9 @@
                                                         @csrf
                                                         @method('PATCH')
                                                         <input type="hidden" name="status" value="Interviewing">
-                                                        <button type="submit" class="w-full px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-left flex items-center justify-between {{ $applicant->status === 'Interviewing' ? 'bg-blue-100 text-blue-800 shadow-sm border border-blue-300' : 'text-gray-500 hover:text-gray-900 border border-transparent' }}">
+                                                        <button type="submit" class="w-full px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-left flex items-center justify-between {{ $applicant->status === 'Interviewing' ? 'bg-amber-100 text-amber-900 shadow-sm border border-amber-300' : 'text-gray-500 hover:text-gray-900 border border-transparent' }}">
                                                             Interviewing
-                                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                                                         </button>
                                                     </form>
 
@@ -435,7 +435,7 @@
                                         <!-- Detail Footer -->
                                         <div class="border-t border-gray-150 px-6 py-4 bg-gray-50 flex items-center justify-between mt-auto" @click.stop>
                                             <div class="flex items-center gap-2">
-                                                <a href="{{ asset('storage/' . $applicant->resume_path )}}" target="_blank" class="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all">
+                                                <a href="{{ asset('storage/' . $applicant->resume_path )}}" target="_blank" class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all">
                                                     <i class="fas fa-eye"></i> View Resume
                                                 </a>
                                                 <a href="{{ asset('storage/' . $applicant->resume_path )}}" target="_blank" class="px-3 py-2 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all" download>
@@ -460,7 +460,7 @@
                                         x-show="!activeApplicantId"
                                         class="flex-1 flex flex-col items-center justify-center p-8 text-center text-gray-500 bg-white"
                                     >
-                                        <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4 shadow-sm border border-blue-100">
+                                        <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 shadow-sm border border-amber-100">
                                             <i class="fas fa-user-circle text-4xl"></i>
                                         </div>
                                         <h4 class="text-lg font-bold text-gray-800 mb-2">No Profile Selected</h4>
@@ -551,7 +551,7 @@
                             <div>
                                 <div class="flex items-center gap-2 flex-wrap mb-0.5">
                                     <h4 class="text-xl font-semibold">
-                                        <a href="{{ route('jobs.show', $application->job->id) }}" class="hover:underline text-blue-900">
+                                        <a href="{{ route('jobs.show', $application->job->id) }}" class="hover:underline text-amber-700">
                                             {{ $application->job->title }}
                                         </a>
                                     </h4>
@@ -567,7 +567,7 @@
                                     <span class="px-2.5 py-1 rounded-full text-xs font-semibold 
                                         {{ $application->status === 'Shortlisted'  ? 'bg-green-100 text-green-800'  : '' }}
                                         {{ $application->status === 'Reviewing'    ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                        {{ $application->status === 'Interviewing' ? 'bg-blue-100 text-blue-800'    : '' }}
+                                        {{ $application->status === 'Interviewing' ? 'bg-amber-100 text-amber-800'    : '' }}
                                         {{ $application->status === 'Rejected'     ? 'bg-red-100 text-red-800'      : '' }}
                                         {{ $application->status === 'Applied'      ? 'bg-gray-100 text-gray-800'    : '' }}
                                     ">

@@ -20,7 +20,7 @@
     };
 @endphp
 
-<div class="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-150 transition-all duration-300 flex flex-col justify-between overflow-hidden">
+<div class="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-amber-400/60 transition-all duration-300 flex flex-col justify-between overflow-hidden">
     
     {{-- Card Body --}}
     <div class="p-6">
@@ -30,12 +30,12 @@
                 <img src="{{ $logoUrl }}" alt="{{ $job->company_name }}"
                     class="w-14 h-14 rounded-xl object-contain bg-gray-50 p-1 border border-gray-100 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
             @else
-                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
-                    <i class="fas fa-building text-blue-500 text-xl"></i>
+                <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-amber-100">
+                    <i class="fas fa-building text-amber-600 text-xl"></i>
                 </div>
             @endif
             <div class="min-w-0">
-                <h3 class="text-lg font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors truncate">
+                <h3 class="text-lg font-bold text-gray-900 leading-snug group-hover:text-amber-650 transition-colors truncate">
                     <a href="{{ route('jobs.show', $job->id) }}">
                         {{ $job->title }}
                     </a>
@@ -50,10 +50,10 @@
             <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold {{ $statusConfig['class'] }}">
                 <i class="fas {{ $statusConfig['icon'] }} text-[10px]"></i> {{ $statusConfig['label'] }}
             </span>
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200/60">
                 <i class="fas fa-briefcase text-[10px]"></i> {{ $job->job_type }}
             </span>
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50/50 text-amber-800 border border-amber-200/40">
                 <i class="fas fa-{{ $job->remote ? 'laptop-house' : 'building' }} text-[10px]"></i> {{ $job->remote ? 'Remote' : 'On-site' }}
             </span>
             @if($job->experience_level)
@@ -96,7 +96,7 @@
     {{-- Card Footer CTA --}}
     <div class="px-6 pb-6 pt-0">
         <a href="{{ route('jobs.show', $job->id) }}"
-            class="block w-full text-center py-2.5 bg-blue-50 border border-blue-200 hover:bg-blue-600 hover:text-white hover:border-transparent text-blue-700 font-bold rounded-xl text-sm transition-all shadow-sm">
+            class="block w-full text-center py-2.5 bg-amber-50 border border-amber-200/60 hover:bg-amber-600 hover:text-white hover:border-transparent text-amber-850 font-bold rounded-xl text-sm transition-all shadow-sm cursor-pointer">
             Job Details
         </a>
     </div>

@@ -30,7 +30,7 @@
 
                 <a href="{{ $paginator->previousPageUrl() }}"
                     rel="prev"
-                    class="px-5 py-3 rounded-xl bg-blue-700 text-white shadow hover:bg-blue-800 transition duration-200">
+                    class="px-5 py-3 rounded-xl bg-amber-600 text-white shadow hover:bg-amber-700 transition duration-200 cursor-pointer">
                     ← Previous
                 </a>
 
@@ -56,14 +56,14 @@
                         @if ($page == $paginator->currentPage())
 
                             <span
-                                class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-700 text-white font-bold shadow-lg">
+                                class="w-12 h-12 flex items-center justify-center rounded-full bg-amber-600 text-white font-bold shadow-lg">
                                 {{ $page }}
                             </span>
 
                         @else
 
                             <a href="{{ $url }}"
-                                class="w-12 h-12 flex items-center justify-center rounded-full bg-white border-2 border-blue-700 text-blue-700 font-medium hover:bg-blue-700 hover:text-white transition duration-200">
+                                class="w-12 h-12 flex items-center justify-center rounded-full bg-white border-2 border-amber-600 text-amber-600 font-medium hover:bg-amber-600 hover:text-white transition duration-200 cursor-pointer">
                                 {{ $page }}
                             </a>
 
@@ -80,7 +80,7 @@
 
                 <a href="{{ $paginator->nextPageUrl() }}"
                     rel="next"
-                    class="px-5 py-3 rounded-xl bg-blue-700 text-white shadow hover:bg-blue-800 transition duration-200">
+                    class="px-5 py-3 rounded-xl bg-amber-600 text-white shadow hover:bg-amber-700 transition duration-200 cursor-pointer">
                     Next →
                 </a>
 

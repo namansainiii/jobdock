@@ -4,9 +4,9 @@
 {{-- ════════════════════════════════════════════════════════
      HERO BANNER
 ════════════════════════════════════════════════════════ --}}
-<div class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 px-4 py-8 mb-6">
+<div class="bg-gradient-to-br from-slate-900 via-slate-800 to-zinc-950 px-4 py-8 mb-6">
     <div class="max-w-6xl mx-auto">
-        <a href="{{ route('jobs.index') }}" class="inline-flex items-center gap-2 text-blue-200 hover:text-white text-sm mb-4 transition-colors">
+        <a href="{{ route('jobs.index') }}" class="inline-flex items-center gap-2 text-slate-300 hover:text-amber-500 text-sm mb-4 transition-colors">
             <i class="fas fa-arrow-left text-xs"></i> Back To Listings
         </a>
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -21,7 +21,7 @@
                 @endif
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-white leading-tight">{{ $job->title }}</h1>
-                    <p class="text-blue-200 mt-0.5">{{ $job->company_name }} &bull; {{ $job->city }}, {{ $job->state }}</p>
+                    <p class="text-slate-300 mt-0.5">{{ $job->company_name }} &bull; {{ $job->city }}, {{ $job->state }}</p>
                     {{-- Quick pills --}}
                     <div class="flex flex-wrap gap-2 mt-2">
                         <span class="bg-white/20 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
@@ -69,9 +69,9 @@
                         – ${{ number_format($job->salary_max) }}
                     @endif
                 </div>
-                <p class="text-blue-300 text-xs mt-0.5">per year</p>
+                <p class="text-amber-400 text-xs mt-0.5">per year</p>
                 @if($job->vacancies && $job->vacancies > 1)
-                <p class="text-blue-200 text-xs mt-1"><i class="fas fa-users mr-1"></i>{{ $job->vacancies }} open positions</p>
+                <p class="text-slate-300 text-xs mt-1"><i class="fas fa-users mr-1"></i>{{ $job->vacancies }} open positions</p>
                 @endif
             </div>
         </div>
@@ -93,7 +93,7 @@
         <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
             <i class="fas fa-shield-halved text-amber-500"></i>
             <span class="text-sm font-semibold text-amber-800 flex-1">You own this listing</span>
-            <a href="{{ route('jobs.edit', $job->id) }}" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all">
+            <a href="{{ route('jobs.edit', $job->id) }}" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg transition-all">
                 <i class="fas fa-pen mr-1 text-xs"></i>Edit
             </a>
             <form method="POST" action="{{ route('jobs.destroy', $job->id) }}" onsubmit="return confirm('Delete this job?')">
@@ -108,7 +108,7 @@
         {{-- ── Quick Info Grid ── --}}
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             <h2 class="text-base font-bold text-gray-700 mb-4 flex items-center gap-2">
-                <i class="fas fa-circle-info text-blue-500"></i> Job At A Glance
+                <i class="fas fa-circle-info text-amber-600"></i> Job At A Glance
             </h2>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {{-- Job Type --}}
@@ -136,9 +136,9 @@
                     <p class="text-sm font-bold text-gray-800">{{ $job->city }}, {{ $job->state }}</p>
                 </div>
                 @if($job->experience_level)
-                <div class="bg-indigo-50 rounded-xl p-3">
+                <div class="bg-amber-50/40 border border-amber-100 rounded-xl p-3">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">Experience</p>
-                    <p class="text-sm font-bold text-indigo-700">{{ $job->experience_level }}</p>
+                    <p class="text-sm font-bold text-amber-800">{{ $job->experience_level }}</p>
                 </div>
                 @endif
                 @if($job->education_level)
@@ -177,8 +177,8 @@
 
         {{-- ── Job Description ── --}}
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="flex items-center gap-3 px-5 py-3.5 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
-                <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div class="flex items-center gap-3 px-5 py-3.5 border-b border-gray-100 bg-gradient-to-r from-slate-100 to-slate-200/60">
+                <div class="w-7 h-7 bg-slate-700 rounded-lg flex items-center justify-center">
                     <i class="fas fa-file-lines text-white text-xs"></i>
                 </div>
                 <h2 class="text-sm font-bold text-gray-800">About This Role</h2>
@@ -222,11 +222,11 @@
         @if($job->tags)
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             <h2 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-                <i class="fas fa-tags text-blue-500"></i> Tags
+                <i class="fas fa-tags text-amber-500"></i> Tags
             </h2>
             <div class="flex flex-wrap gap-2">
                 @foreach(explode(',', $job->tags) as $tag)
-                <span class="bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
+                <span class="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full">
                     #{{ trim($tag) }}
                 </span>
                 @endforeach
@@ -247,7 +247,7 @@
                             ════════════════════════════════════════════ --}}
                             <div x-data="{ open: false }" id="applicant-form">
                                 <button @click="open = true"
-                                    class="w-full flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all">
+                                    class="w-full flex items-center justify-center gap-2 px-5 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer">
                                     <i class="fas fa-paper-plane text-sm"></i> Apply Now
                                 </button>
 
@@ -267,13 +267,13 @@
                                         class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
 
                                         {{-- Modal Header --}}
-                                        <div class="bg-gradient-to-br from-blue-900 to-indigo-800 px-6 py-5">
+                                        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-zinc-950 px-6 py-5">
                                             <div class="flex items-start justify-between">
                                                 <div>
                                                     <h3 class="text-lg font-extrabold text-white">Apply for Position</h3>
-                                                    <p class="text-blue-200 text-sm mt-0.5">{{ $job->title }} &bull; {{ $job->company_name }}</p>
+                                                    <p class="text-slate-350 text-sm mt-0.5">{{ $job->title }} &bull; {{ $job->company_name }}</p>
                                                 </div>
-                                                <button @click="open = false" class="text-blue-300 hover:text-white transition-colors mt-0.5">
+                                                <button @click="open = false" class="text-slate-400 hover:text-amber-500 transition-colors mt-0.5 cursor-pointer">
                                                     <i class="fas fa-xmark text-xl"></i>
                                                 </button>
                                             </div>
@@ -314,7 +314,7 @@
                                                             <input type="text" name="full_name" id="full_name" required
                                                                 placeholder="Your full name"
                                                                 value="{{ auth()->user()->name }}"
-                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -323,7 +323,7 @@
                                                             <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                                             <input type="text" name="contact_phone" id="contact_phone"
                                                                 placeholder="+1 (555) 000-0000"
-                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -337,7 +337,7 @@
                                                             <input type="email" name="contact_email" id="contact_email" required
                                                                 placeholder="your@email.com"
                                                                 value="{{ auth()->user()->email }}"
-                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -346,7 +346,7 @@
                                                             <i class="fas fa-map-pin absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                                             <input type="text" name="location" id="location"
                                                                 placeholder="City, State"
-                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                                                class="w-full border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -356,7 +356,7 @@
                                                     <label class="block text-xs font-bold text-gray-600 mb-1.5">Message to Company</label>
                                                     <textarea name="message" id="message" rows="3"
                                                         placeholder="Tell them why you're a great fit..."
-                                                        class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"></textarea>
+                                                        class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all resize-none"></textarea>
                                                 </div>
 
                                                 {{-- Row: Experience + Education --}}
@@ -364,7 +364,7 @@
                                                     <div>
                                                         <label class="block text-xs font-bold text-gray-600 mb-1.5">Your Experience Level</label>
                                                         <select name="experience_level" id="experience_level"
-                                                            class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                                                            class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
                                                             <option value="">— Select —</option>
                                                             @foreach(['Entry Level','Mid Level','Senior Level','Lead / Principal','Executive'] as $exp)
                                                                 <option value="{{ $exp }}" {{ old('experience_level') === $exp ? 'selected' : '' }}>{{ $exp }}</option>
@@ -374,7 +374,7 @@
                                                     <div>
                                                         <label class="block text-xs font-bold text-gray-600 mb-1.5">Your Education Level</label>
                                                         <select name="education_level" id="education_level"
-                                                            class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                                                            class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
                                                             <option value="">— Select —</option>
                                                             @foreach(['No Requirement','High School / GED',"Bachelor's Degree","Master's Degree","PhD / Doctorate",'Certification / Diploma'] as $edu)
                                                                 <option value="{{ $edu }}" {{ old('education_level') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
@@ -394,30 +394,30 @@
                                                             <div class="flex-1 min-w-0">
                                                                 <p class="text-xs font-bold text-gray-800">Profile Resume Available</p>
                                                                 <a href="{{ Storage::disk('s3')->url(auth()->user()->resume_path) }}" target="_blank"
-                                                                    class="text-[11px] text-blue-600 hover:underline">Preview PDF →</a>
+                                                                    class="text-[11px] text-amber-600 hover:underline">Preview PDF →</a>
                                                             </div>
                                                         </div>
                                                         <label class="flex items-center gap-2 cursor-pointer mb-2.5">
                                                             <input type="checkbox" name="use_saved_resume" value="1"
                                                                 x-model="useSavedResume"
-                                                                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4">
+                                                                class="rounded border-gray-300 text-amber-600 focus:ring-amber-500 w-4 h-4">
                                                             <span class="text-sm text-gray-700 font-medium">Use my saved profile resume</span>
                                                         </label>
                                                         <div x-show="!useSavedResume" x-transition>
                                                             <label class="block text-xs text-gray-500 mb-1">Or upload a different PDF:</label>
-                                                            <div class="border-2 border-dashed border-gray-200 rounded-xl p-3 hover:border-blue-300 transition-all">
+                                                            <div class="border-2 border-dashed border-gray-200 rounded-xl p-3 hover:border-amber-300 transition-all">
                                                                 <input type="file" name="resume_path" accept=".pdf"
                                                                     :required="!useSavedResume"
-                                                                    class="block w-full text-sm text-gray-500 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                                                    class="block w-full text-sm text-gray-500 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100">
                                                             </div>
                                                         </div>
                                                     @else
-                                                        <div class="border-2 border-dashed border-gray-200 rounded-xl p-3 hover:border-blue-300 transition-all">
+                                                        <div class="border-2 border-dashed border-gray-200 rounded-xl p-3 hover:border-amber-300 transition-all">
                                                             <input type="file" name="resume_path" accept=".pdf" required
-                                                                class="block w-full text-sm text-gray-500 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                                                class="block w-full text-sm text-gray-500 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100">
                                                         </div>
                                                         <p class="text-[11px] text-gray-400 mt-1.5">
-                                                            <a href="{{ route('dashboard.index') }}" class="text-blue-500 hover:underline">Save a resume to your profile</a> to reuse it instantly!
+                                                            <a href="{{ route('dashboard.index') }}" class="text-amber-600 hover:underline">Save a resume to your profile</a> to reuse it instantly!
                                                         </p>
                                                     @endif
                                                 </div>
@@ -430,7 +430,7 @@
                                                     Cancel
                                                 </button>
                                                 <button type="submit"
-                                                    class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-sm shadow-md flex items-center justify-center gap-2">
+                                                    class="flex-1 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition-all text-sm shadow-md flex items-center justify-center gap-2 cursor-pointer">
                                                     <i class="fas fa-paper-plane text-xs"></i> Submit Application
                                                 </button>
                                             </div>
@@ -474,7 +474,7 @@
                     <div x-cloak x-show="opened" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(15,23,42,0.5); backdrop-filter: blur(4px);">
                         <div @click.away="opened = false" class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
                             <h3 class="text-lg font-bold mb-2">Applications for {{ $job->title }}</h3>
-                            <p class="text-gray-500 text-sm">Manage applications from your <a href="{{ route('dashboard.index') }}" class="text-blue-600 underline">dashboard</a>.</p>
+                            <p class="text-gray-500 text-sm">Manage applications from your <a href="{{ route('dashboard.index') }}" class="text-amber-600 underline">dashboard</a>.</p>
                         </div>
                     </div>
                 </div>
@@ -482,7 +482,7 @@
         @else
             @if($job->status === 'active')
                 <a href="{{ route('login') }}"
-                    class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-md">
+                    class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition-all shadow-md cursor-pointer">
                     <i class="fas fa-right-to-bracket text-sm"></i> Login To Apply
                 </a>
             @else
@@ -523,7 +523,7 @@
                 @endif
                 @if($job->company_website)
                 <a href="{{ $job->company_website }}" target="_blank"
-                    class="inline-flex items-center gap-1.5 mt-3 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors">
+                    class="inline-flex items-center gap-1.5 mt-3 text-amber-600 hover:text-amber-800 text-sm font-semibold transition-colors">
                     <i class="fas fa-globe text-xs"></i> Visit Website
                 </a>
                 @endif
@@ -545,22 +545,22 @@
         @endphp
         @guest
             <div class="bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-center text-sm text-gray-500">
-                <i class="fas fa-bookmark mr-1"></i> <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login</a> to save this job
+                <i class="fas fa-bookmark mr-1"></i> <a href="{{ route('login') }}" class="text-amber-600 hover:underline">Login</a> to save this job
             </div>
         @else
             @if($isBookmarked)
                 <form method="POST" action="{{ route('bookmarks.destroy', $job->id) }}">
                     @csrf @method('DELETE')
                     <button type="submit"
-                        class="w-full flex items-center justify-center gap-2 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl border border-gray-200 transition-all text-sm">
-                        <i class="fas fa-bookmark text-yellow-500"></i> Saved
+                        class="w-full flex items-center justify-center gap-2 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl border border-gray-200 transition-all text-sm cursor-pointer">
+                        <i class="fas fa-bookmark text-amber-500"></i> Saved
                     </button>
                 </form>
             @else
                 <form method="POST" action="{{ route('bookmarks.store', $job->id) }}">
                     @csrf
                     <button type="submit"
-                        class="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-md text-sm">
+                        class="w-full flex items-center justify-center gap-2 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition-all shadow-md text-sm cursor-pointer">
                         <i class="fas fa-bookmark"></i> Save Job
                     </button>
                 </form>

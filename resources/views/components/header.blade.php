@@ -1,4 +1,4 @@
-<header class="bg-blue-900 text-white p-4" x-data="{open : false}">
+<header class="bg-slate-900 text-white p-4 border-b border-slate-800/80" x-data="{open : false}">
             <div class="container mx-auto flex justify-between items-center">
                 <h1 class="text-3xl font-semibold">
                     <a href={{url('/')}}>JobDock</a>
@@ -63,7 +63,7 @@
                 </button>
             </div>
             <!-- Mobile Menu -->
-            <nav x-show="open" @click.outside="open = false" id="mobile-menu" class="md:hidden bg-blue-900 text-white mt-5 pb-4 space-y-2">
+            <nav x-show="open" @click.outside="open = false" id="mobile-menu" class="md:hidden bg-slate-900 text-white mt-5 pb-4 space-y-2 border-t border-slate-800">
                 <x-navlink url="/jobs" :active="request()->is('jobs')" :mobile="true">
                     All Jobs
                 </x-navlink>

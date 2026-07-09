@@ -2,14 +2,14 @@
     <x-slot name="title">Edit Job — {{ $job->title }}</x-slot>
 
     {{-- Page Hero --}}
-    <div class="bg-gradient-to-br from-indigo-900 via-blue-800 to-blue-900 py-10 px-4 text-center text-white mb-8">
+    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-zinc-950 py-10 px-4 text-center text-white mb-8">
         <div class="flex items-center justify-center gap-3 mb-2">
             <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                 <i class="fas fa-pen-to-square text-white text-lg"></i>
             </div>
             <h1 class="text-3xl font-extrabold tracking-tight">Edit Job</h1>
         </div>
-        <p class="text-blue-200 text-sm">Update the details for <span class="font-semibold text-white">{{ $job->title }}</span></p>
+        <p class="text-slate-300 text-sm">Update the details for <span class="font-semibold text-white">{{ $job->title }}</span></p>
     </div>
 
     <div class="max-w-5xl mx-auto px-4 pb-16">
@@ -37,8 +37,8 @@
                  SECTION 1 — JOB OVERVIEW
             ══════════════════════════════════════════ --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div class="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-slate-100 to-slate-200 border-b border-gray-100">
+                    <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-info-circle text-white text-sm"></i>
                     </div>
                     <div>
@@ -52,7 +52,7 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Job Title <span class="text-red-500">*</span></label>
                         <input type="text" name="title" id="title" value="{{ old('title', $job->title) }}"
                             placeholder="e.g. Senior Frontend Developer"
-                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all @error('title') border-red-400 bg-red-50 @enderror">
+                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all @error('title') border-red-400 bg-red-50 @enderror">
                     </div>
 
                     {{-- Row: Industry + Job Type --}}
@@ -60,7 +60,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Industry</label>
                             <select name="industry" id="industry"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
                                 <option value="">— Select Industry —</option>
                                 @foreach([
                                     'Technology','Software / IT','Finance & Banking','Healthcare',
@@ -75,7 +75,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Job Type <span class="text-red-500">*</span></label>
                             <select name="job_type" id="job_type"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white @error('job_type') border-red-400 @enderror">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white @error('job_type') border-red-400 @enderror">
                                 @foreach(['Full-Time','Part-Time','Contract','Internship','Freelance'] as $jt)
                                     <option value="{{ $jt }}" {{ old('job_type', $job->job_type) === $jt ? 'selected' : '' }}>{{ $jt }}</option>
                                 @endforeach
@@ -88,7 +88,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Experience Level</label>
                             <select name="experience_level" id="experience_level"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
                                 <option value="">— Any Experience —</option>
                                 @foreach(['Entry Level','Mid Level','Senior Level','Lead / Principal','Executive'] as $exp)
                                     <option value="{{ $exp }}" {{ old('experience_level', $job->experience_level) === $exp ? 'selected' : '' }}>{{ $exp }}</option>
@@ -98,7 +98,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Education Level</label>
                             <select name="education_level" id="education_level"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
                                 <option value="">— Any Education —</option>
                                 @foreach(['No Requirement','High School / GED',"Bachelor's Degree","Master's Degree","PhD / Doctorate",'Certification / Diploma'] as $edu)
                                     <option value="{{ $edu }}" {{ old('education_level', $job->education_level) === $edu ? 'selected' : '' }}>{{ $edu }}</option>
@@ -112,7 +112,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Remote Work <span class="text-red-500">*</span></label>
                             <select name="remote" id="remote"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
                                 <option value="0" {{ old('remote', $job->remote) == '0' ? 'selected' : '' }}>On-site</option>
                                 <option value="1" {{ old('remote', $job->remote) == '1' ? 'selected' : '' }}>Remote</option>
                             </select>
@@ -122,13 +122,13 @@
                             <input type="number" name="vacancies" id="vacancies"
                                 value="{{ old('vacancies', $job->vacancies ?? 1) }}"
                                 min="1" max="999"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Application Deadline</label>
                             <input type="date" name="application_deadline" id="application_deadline"
                                 value="{{ old('application_deadline', $job->application_deadline ? \Carbon\Carbon::parse($job->application_deadline)->format('Y-m-d') : '') }}"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                         </div>
                     </div>
 
@@ -139,7 +139,7 @@
                             <i class="fas fa-tags absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                             <input type="text" name="tags" id="tags" value="{{ old('tags', $job->tags) }}"
                                 placeholder="e.g. react,nodejs,remote,startup"
-                                class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                         </div>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                                 <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-sm">$</span>
                                 <input type="number" name="salary" id="salary" value="{{ old('salary', $job->salary) }}"
                                     placeholder="60000" min="0" step="1000"
-                                    class="w-full border border-gray-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all @error('salary') border-red-400 @enderror">
+                                    class="w-full border border-gray-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all @error('salary') border-red-400 @enderror">
                             </div>
                         </div>
                         <div>
@@ -175,7 +175,7 @@
                                 <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-sm">$</span>
                                 <input type="number" name="salary_max" id="salary_max" value="{{ old('salary_max', $job->salary_max) }}"
                                     placeholder="90000" min="0" step="1000"
-                                    class="w-full border border-gray-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                    class="w-full border border-gray-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                             </div>
                         </div>
                     </div>
@@ -200,20 +200,20 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Job Description <span class="text-red-500">*</span></label>
                         <textarea name="description" id="description" rows="6"
                             placeholder="Describe the role, responsibilities..."
-                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none @error('description') border-red-400 @enderror">{{ old('description', $job->description) }}</textarea>
+                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all resize-none @error('description') border-red-400 @enderror">{{ old('description', $job->description) }}</textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Requirements</label>
                             <textarea name="requirements" id="requirements" rows="4"
                                 placeholder="Required skills, education, experience..."
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none">{{ old('requirements', $job->requirements) }}</textarea>
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all resize-none">{{ old('requirements', $job->requirements) }}</textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Benefits</label>
                             <textarea name="benefits" id="benefits" rows="4"
                                 placeholder="Health insurance, 401k, flexible hours..."
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none">{{ old('benefits', $job->benefits) }}</textarea>
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all resize-none">{{ old('benefits', $job->benefits) }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -239,7 +239,7 @@
                             <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                             <input type="text" name="address" id="address" value="{{ old('address', $job->address) }}"
                                 placeholder="Start typing an address..."
-                                class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -289,7 +289,7 @@
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Company Name <span class="text-red-500">*</span></label>
                             <input type="text" name="company_name" id="company_name" value="{{ old('company_name', $job->company_name) }}"
                                 placeholder="Acme Corp"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all @error('company_name') border-red-400 @enderror">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all @error('company_name') border-red-400 @enderror">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Company Website</label>
@@ -297,14 +297,14 @@
                                 <i class="fas fa-globe absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                                 <input type="url" name="company_website" id="company_website" value="{{ old('company_website', $job->company_website) }}"
                                     placeholder="https://acmecorp.com"
-                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                             </div>
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Company Description</label>
                         <textarea name="company_description" id="company_description" rows="3"
-                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none">{{ old('company_description', $job->company_description) }}</textarea>
+                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all resize-none">{{ old('company_description', $job->company_description) }}</textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -312,7 +312,7 @@
                             <div class="relative">
                                 <i class="fas fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                                 <input type="email" name="contact_email" id="contact_email" value="{{ old('contact_email', $job->contact_email) }}"
-                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all @error('contact_email') border-red-400 @enderror">
+                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all @error('contact_email') border-red-400 @enderror">
                             </div>
                         </div>
                         <div>
@@ -320,7 +320,7 @@
                             <div class="relative">
                                 <i class="fas fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                                 <input type="text" name="contact_phone" id="contact_phone" value="{{ old('contact_phone', $job->contact_phone) }}"
-                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all">
                             </div>
                         </div>
                     </div>
@@ -332,13 +332,13 @@
                             <p class="text-xs text-gray-500">Current logo — upload a new one to replace it.</p>
                         </div>
                         @endif
-                        <div class="border-2 border-dashed border-gray-200 rounded-xl p-4 flex items-center gap-4 hover:border-blue-300 transition-all">
+                        <div class="border-2 border-dashed border-gray-200 rounded-xl p-4 flex items-center gap-4 hover:border-amber-300 transition-all">
                             <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-image text-gray-400"></i>
                             </div>
                             <div class="flex-1">
                                 <input type="file" name="company_logo" id="company_logo" accept="image/*"
-                                    class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100">
                                 <p class="text-xs text-gray-400 mt-0.5">PNG, JPG, GIF up to 2MB</p>
                             </div>
                         </div>
@@ -364,7 +364,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Publish Status</label>
                             <select name="status" id="status"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
                                 <option value="active"  {{ old('status', $job->status) === 'active'  ? 'selected' : '' }}>🟢 Active — visible to job seekers</option>
                                 <option value="draft"   {{ old('status', $job->status) === 'draft'   ? 'selected' : '' }}>🟡 Draft — hidden, save for later</option>
                                 <option value="closed"  {{ old('status', $job->status) === 'closed'  ? 'selected' : '' }}>🔴 Closed — position filled</option>
@@ -373,7 +373,7 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             <button type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg">
+                                class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg cursor-pointer">
                                 <i class="fas fa-floppy-disk text-sm"></i>
                                 Save Changes
                             </button>

@@ -33,11 +33,11 @@
           {{-- Header --}}
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-base font-bold text-gray-800 flex items-center gap-2">
-              <i class="fas fa-sliders-h text-blue-500"></i>
+              <i class="fas fa-sliders-h text-amber-500"></i>
               Filters
             </h3>
             @if($activeFilterCount > 0)
-              <span class="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $activeFilterCount }}</span>
+              <span class="bg-amber-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $activeFilterCount }}</span>
             @endif
           </div>
 
@@ -52,8 +52,8 @@
                   value="{{ $type }}"
                   {{ in_array($type, $activeJobTypes) ? 'checked' : '' }}
                   onchange="document.getElementById('filter-form').submit()"
-                  class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4 flex-shrink-0">
-                <span class="text-sm text-gray-700 group-hover:text-blue-600 transition-colors {{ in_array($type, $activeJobTypes) ? 'font-semibold text-blue-700' : '' }}">
+                  class="rounded border-gray-300 text-amber-650 focus:ring-amber-500 w-4 h-4 flex-shrink-0">
+                <span class="text-sm text-gray-700 group-hover:text-amber-600 transition-colors {{ in_array($type, $activeJobTypes) ? 'font-semibold text-amber-700' : '' }}">
                   {{ $type }}
                 </span>
               </label>
@@ -76,13 +76,13 @@
                 placeholder="e.g. 50000"
                 min="0"
                 step="5000"
-                class="w-full pl-7 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all {{ $activeMinSalary ? 'border-blue-400 bg-blue-50' : '' }}">
+                class="w-full pl-7 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all {{ $activeMinSalary ? 'border-amber-400 bg-amber-50/20' : '' }}">
             </div>
           </div>
 
           {{-- Apply button --}}
           <button type="submit"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-sm transition-all flex items-center justify-center gap-2">
+            class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm">
             <i class="fas fa-search text-xs"></i>
             Apply Filters
           </button>
@@ -125,7 +125,7 @@
             <div class="text-5xl mb-4">🔍</div>
             <h3 class="text-xl font-bold text-gray-700 mb-2">No jobs found</h3>
             <p class="text-gray-500 mb-4">Try adjusting your filters or search terms.</p>
-            <a href="{{ route('jobs.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all">
+            <a href="{{ route('jobs.index') }}" class="inline-block bg-amber-600 hover:bg-amber-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all cursor-pointer">
               View all jobs
             </a>
           </div>

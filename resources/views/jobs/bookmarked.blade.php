@@ -65,7 +65,7 @@
                         {{-- Header --}}
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-bold text-gray-800 flex items-center gap-2">
-                                <i class="fas fa-sliders-h text-blue-500"></i>
+                                <i class="fas fa-sliders-h text-amber-500"></i>
                                 Filters
                             </h3>
                             <span x-show="selectedTypes.length > 0 || minSalary !== '' || bookmarkFilter !== 'all'" 
@@ -82,9 +82,9 @@
                                 @foreach(['Full-Time', 'Part-Time', 'Contract', 'Internship', 'Freelance'] as $type)
                                     <label class="flex items-center gap-2.5 cursor-pointer group">
                                         <input type="checkbox" value="{{ $type }}" x-model="selectedTypes"
-                                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4 flex-shrink-0">
-                                        <span class="text-sm text-gray-600 group-hover:text-blue-600 transition-colors"
-                                              :class="selectedTypes.includes('{{ $type }}') ? 'font-semibold text-blue-700' : ''">
+                                            class="rounded border-gray-300 text-amber-600 focus:ring-amber-500 w-4 h-4 flex-shrink-0">
+                                        <span class="text-sm text-gray-600 group-hover:text-amber-600 transition-colors"
+                                              :class="selectedTypes.includes('{{ $type }}') ? 'font-semibold text-amber-700' : ''">
                                             {{ $type }}
                                         </span>
                                     </label>
@@ -100,8 +100,8 @@
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400 text-sm">$</span>
                                 <input type="number" x-model="minSalary" placeholder="e.g. 50000" min="0" step="5000"
-                                    class="w-full pl-7 pr-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                                    :class="minSalary ? 'border-blue-400 bg-blue-50/50' : ''">
+                                    class="w-full pl-7 pr-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all"
+                                    :class="minSalary ? 'border-amber-400 bg-amber-50/20' : ''">
                             </div>
                         </div>
 
@@ -164,7 +164,7 @@
                         <h3 class="text-xl font-bold text-gray-700 mb-2">No Saved Jobs Found</h3>
                         <p class="text-gray-400 text-sm mb-4 max-w-xs mx-auto">No saved jobs match your current filter selections. Try clearing or relaxing the filters.</p>
                         <button @click="clearFilters()" 
-                                class="inline-flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm">
+                                class="inline-flex items-center gap-2 px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm cursor-pointer">
                             Clear Filters
                         </button>
                     </div>
@@ -181,7 +181,7 @@
                 <h2 class="text-xl font-bold text-gray-700 mb-2">No Saved Jobs</h2>
                 <p class="text-gray-400 text-sm mb-6 max-w-sm mx-auto">You haven't saved any jobs yet. Save jobs to access them here for quick retrieval later.</p>
                 <a href="{{ route('jobs.index') }}" 
-                    class="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm">
+                    class="inline-flex items-center gap-2 px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm cursor-pointer">
                     <i class="fa-solid fa-magnifying-glass"></i> Explore Jobs
                 </a>
             </div>

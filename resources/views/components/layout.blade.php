@@ -22,17 +22,17 @@
         <x-hero/>
     @elseif(request()->is('jobs') || request()->is('jobs/search'))
         {{-- Show a combined search hero header on the search/index list page --}}
-        <div class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 py-8 px-4 text-center text-white mb-6">
+        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-zinc-950 py-8 px-4 text-center text-white mb-6">
             <h1 class="text-3xl font-extrabold tracking-tight mb-2">Find Your Next Role</h1>
-            <p class="text-blue-200 text-sm mb-6">Explore the best job opportunities curated just for you.</p>
+            <p class="text-slate-300 text-sm mb-6">Explore the best job opportunities curated just for you.</p>
             <div class="max-w-4xl mx-auto">
                 <x-search/>
             </div>
         </div>
     @elseif(request()->is('bookmarks'))
-        <div class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 py-10 px-4 text-center text-white mb-6">
+        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-zinc-950 py-10 px-4 text-center text-white mb-6">
             <h1 class="text-3xl font-extrabold tracking-tight mb-2">Saved Jobs</h1>
-            <p class="text-blue-200 text-sm">Keep track of the opportunities you're interested in.</p>
+            <p class="text-slate-300 text-sm">Keep track of the opportunities you're interested in.</p>
         </div>
     @else
         <x-top-banner/>

@@ -17,7 +17,7 @@
         rows="{{$rows}}"
         id="{{$id}}"
         name="{{$name}}"
-        class="w-full px-4 py-2 border rounded focus:outline-none @error($name) border-red-500 @enderror"
+        class="w-full px-4 py-2.5 border border-gray-250 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-sm resize-none @error($name) border-red-500 @enderror"
         placeholder="{{$placeholder}}"
             
     >{{old($name,$value)}}</textarea>
