@@ -76,8 +76,12 @@ This document serves as our project roadmap. We will use this checklist to imple
 *Allows companies to toggle job post states (Active, Draft, Closed).*
 *   **Target User:** Companies (Employers)
 *   **Priority:** Medium
-*   **Status:** `[ ] Not Started`
-*   **Implementation Steps:**
-    *   Add a `status` column (`'active'`, `'draft'`, `'closed'`) to the `job_listings` table.
-    *   Update `JobController@index` and search queries to only return `'active'` jobs to the public.
-    *   Add toggle controls for status on the Employer Dashboard and Job Creation form.
+*   **Status:** `[x] Completed`
+*   **Implementation Details:**
+    *   Added `status` string column (default `'active'`) to `job_listings` table via migration — all existing jobs remain visible automatically.
+    *   Added `'status'` to `Job::$fillable` and a `scopePublic()` query scope (`where('status', 'active')`) for clean, reusable filtering.
+    *   `JobController@index` and `@search` now apply `->public()` scope — draft/closed jobs are invisible to the public.
+    *   Added `JobController@updateStatus` — a dedicated `PATCH /jobs/{job}/status` endpoint for the dashboard quick-toggle.
+    *   **Employer Dashboard**: each job card now shows a colour-coded status badge (🟢 Active / 🟡 Draft / 🔴 Closed) and an inline dropdown that submits on change to instantly toggle status.
+    *   **Create Job form**: added a "Publish Status" select (Active / Draft), defaulting to Active.
+    *   **Edit Job form**: added a "Publish Status" select (Active / Draft / Closed) with the current value pre-selected.

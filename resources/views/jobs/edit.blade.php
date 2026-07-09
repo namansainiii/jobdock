@@ -68,6 +68,17 @@
 
                     <x-input.file label="Contact Logo" id="company_logo" name="company_logo" />
 
+                    <div class="mb-4">
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Publish Status</label>
+                        <select id="status" name="status"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                            <option value="active" {{ old('status', $job->status) === 'active' ? 'selected' : '' }}>🟢 Active — visible to job seekers</option>
+                            <option value="draft"  {{ old('status', $job->status) === 'draft'  ? 'selected' : '' }}>🟡 Draft — hidden, save for later</option>
+                            <option value="closed" {{ old('status', $job->status) === 'closed' ? 'selected' : '' }}>🔴 Closed — position filled / no longer accepting</option>
+                        </select>
+                        <p class="text-xs text-gray-400 mt-1">You can also toggle status directly from your dashboard.</p>
+                    </div>
+
                     <button
                         type="submit"
                         class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 my-3 rounded focus:outline-none">

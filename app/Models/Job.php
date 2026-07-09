@@ -37,8 +37,18 @@ class Job extends Model
         'company_description'  , 
         'company_logo' , 
         'company_website',
-        'user_id'
+        'user_id',
+        'status'
     ];
+
+    /**
+     * Scope: only jobs visible to the public (active).
+     * Usage: Job::public()->...
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('status', 'active');
+    }
 
     public function user() :BelongsTo
     {

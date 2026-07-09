@@ -72,17 +72,95 @@
         <!-- Right Pane: Listings or Employee View -->
         <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-150 w-full md:w-2/3 @if($user->role === 'company') md:h-full md:overflow-y-auto md:pr-4 @endif">
             @if($user->role === 'company')
-                <h3 class="h3 text-3xl text-center font-bold mb-6 border-b border-gray-100 pb-4">
-                    My Job Listings
-                </h3>
-                @forelse($jobs as $job)
-                <div class="border-b border-gray-200 py-6 last:border-b-0">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900">{{$job->title}} <span class="text-sm font-normal text-gray-500">({{$job->job_type}})</span></h3>
-                            <p class="text-gray-600 mt-1">{{$job->description}}</p>
+                @php
+                    $countAll    = $jobs->count();
+                    $countActive = $jobs->where('status', 'active')->count();
+                    $countDraft  = $jobs->where('status', 'draft')->count();
+                    $countClosed = $jobs->where('status', 'closed')->count();
+                @endphp
+
+                <div x-data="{ listingFilter: 'all' }">
+                    {{-- Header + Filter Tabs --}}
+                    <div class="border-b border-gray-100 pb-4 mb-2">
+                        <h3 class="h3 text-3xl text-center font-bold mb-4">
+                            My Job Listings
+                        </h3>
+                        {{-- Filter Tab Bar --}}
+                        <div class="flex items-center gap-2 flex-wrap justify-center">
+                            <button @click="listingFilter = 'all'"
+                                :class="listingFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                All
+                                <span class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">{{ $countAll }}</span>
+                            </button>
+                            <button @click="listingFilter = 'active'"
+                                :class="listingFilter === 'active' ? 'bg-green-600 text-white' : 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'"
+                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                🟢 Active
+                                <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">{{ $countActive }}</span>
+                            </button>
+                            <button @click="listingFilter = 'draft'"
+                                :class="listingFilter === 'draft' ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-yellow-700 border border-yellow-200 hover:bg-yellow-100'"
+                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                🟡 Draft
+                                <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">{{ $countDraft }}</span>
+                            </button>
+                            <button @click="listingFilter = 'closed'"
+                                :class="listingFilter === 'closed' ? 'bg-red-600 text-white' : 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100'"
+                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                🔴 Closed
+                                <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">{{ $countClosed }}</span>
+                            </button>
                         </div>
-                        <div class="flex space-x-3">
+                    </div>
+
+                @forelse($jobs as $job)
+                <div x-show="listingFilter === 'all' || listingFilter === '{{ $job->status }}'"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-1"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="border-b border-gray-200 py-6 last:border-b-0">
+
+                    <div class="flex justify-between items-start gap-3">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-xl font-bold text-gray-900">{{$job->title}}</h3>
+                                <span class="text-sm font-normal text-gray-500">({{$job->job_type}})</span>
+                                {{-- Status Badge --}}
+                                @php
+                                    $badgeClass = match($job->status) {
+                                        'active'  => 'bg-green-100 text-green-700 border border-green-300',
+                                        'draft'   => 'bg-yellow-100 text-yellow-700 border border-yellow-300',
+                                        'closed'  => 'bg-red-100 text-red-700 border border-red-300',
+                                        default   => 'bg-gray-100 text-gray-600 border border-gray-300',
+                                    };
+                                    $badgeIcon = match($job->status) {
+                                        'active'  => 'fa-circle-check',
+                                        'draft'   => 'fa-pen-to-square',
+                                        'closed'  => 'fa-ban',
+                                        default   => 'fa-circle',
+                                    };
+                                @endphp
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold {{ $badgeClass }}">
+                                    <i class="fas {{ $badgeIcon }} text-[10px]"></i>
+                                    {{ ucfirst($job->status) }}
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mt-1 text-sm truncate">{{$job->description}}</p>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            {{-- Status Toggle --}}
+                            <form method="POST" action="{{ route('jobs.status', $job->id) }}">
+                                @csrf
+                                @method('PATCH')
+                                <select name="status" onchange="this.form.submit()"
+                                    class="text-xs font-semibold border rounded-lg px-2 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all
+                                    {{ $job->status === 'active' ? 'bg-green-50 border-green-300 text-green-700' : ($job->status === 'draft' ? 'bg-yellow-50 border-yellow-300 text-yellow-700' : 'bg-red-50 border-red-300 text-red-700') }}">
+                                    <option value="active"  {{ $job->status === 'active'  ? 'selected' : '' }}>🟢 Active</option>
+                                    <option value="draft"   {{ $job->status === 'draft'   ? 'selected' : '' }}>🟡 Draft</option>
+                                    <option value="closed"  {{ $job->status === 'closed'  ? 'selected' : '' }}>🔴 Closed</option>
+                                </select>
+                            </form>
                             <a href="{{ route('jobs.edit', ['job' => $job->id, 'from' => 'dashboard']) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition-all font-semibold shadow-sm">Edit</a>
                             <form method="POST" action="{{ route('jobs.destroy' , $job->id) }}?from=dashboard" onsubmit="return confirm('Are you sure you want to delete this Job?')">
                                 @csrf
@@ -93,6 +171,7 @@
                             </form>
                         </div>
                     </div>
+
                 <div class="mt-4 mb-8" x-data="{ 
                     openModal: {{ session('open_modal_job_id') == $job->id ? 'true' : 'false' }},
                     activeApplicantId: {{ (session('open_modal_job_id') == $job->id && session('open_drawer_id')) ? session('open_drawer_id') : 'null' }},
@@ -383,50 +462,134 @@
                     </div>
                 </div>
                 @empty
-                <p class="text-gray-700 text-center mt-10">YOU HAVE NO JOB LISTINGS</p>
+                    <p class="text-gray-700 text-center mt-10">YOU HAVE NO JOB LISTINGS</p>
                 @endforelse
+
+                {{-- No-results message when a filter returns 0 items (all jobs exist but none match the active filter) --}}
+                <div x-show="
+                    (listingFilter === 'active'  && {{ $countActive }}  === 0) ||
+                    (listingFilter === 'draft'   && {{ $countDraft }}   === 0) ||
+                    (listingFilter === 'closed'  && {{ $countClosed }}  === 0)
+                " class="text-center py-10 text-gray-400 text-sm" style="display:none;">
+                    <div class="text-4xl mb-2">📭</div>
+                    <p class="font-medium">No jobs with this status yet.</p>
+                </div>
+
+                </div>{{-- end x-data listingFilter --}}
             @else
                 <!-- Employee/Job Seeker dashboard view -->
                 <div class="mb-8">
-                    <h3 class="h3 text-3xl text-center font-bold mb-4">
-                        My Job Applications
-                    </h3>
-                    @forelse($applications as $application)
-                    <div class="flex justify-between items-center border-b border-gray-200 py-4">
-                        <div>
-                            <h4 class="text-xl font-semibold">
-                                <a href="{{ route('jobs.show', $application->job->id) }}" class="hover:underline text-blue-900">
-                                    {{ $application->job->title }}
-                                </a>
-                            </h4>
-                            <p class="text-gray-600">{{ $application->job->company_name }} &bull; {{ $application->job->city }}, {{ $application->job->state }}</p>
-                            <p class="text-sm text-gray-500 mt-1">Applied on: {{ $application->created_at->format('M d, Y') }}</p>
-                            <div class="mt-2">
-                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold 
-                                    {{ $application->status === 'Shortlisted' ? 'bg-green-100 text-green-800' : '' }}
-                                    {{ $application->status === 'Reviewing' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                    {{ $application->status === 'Interviewing' ? 'bg-blue-100 text-blue-800' : '' }}
-                                    {{ $application->status === 'Rejected' ? 'bg-red-100 text-red-800' : '' }}
-                                    {{ $application->status === 'Applied' ? 'bg-gray-100 text-gray-800' : '' }}
-                                ">
-                                    {{ $application->status }}
-                                </span>
+                    @php
+                        $appCountAll    = $applications->count();
+                        $appCountActive = $applications->filter(fn($a) => $a->job?->status === 'active')->count();
+                        $appCountDraft  = $applications->filter(fn($a) => $a->job?->status === 'draft')->count();
+                        $appCountClosed = $applications->filter(fn($a) => $a->job?->status === 'closed')->count();
+                    @endphp
+
+                    <div x-data="{ appFilter: 'all' }">
+                        {{-- Header + Filter Tabs --}}
+                        <div class="border-b border-gray-100 pb-4 mb-2">
+                            <h3 class="h3 text-3xl text-center font-bold mb-4">
+                                My Job Applications
+                            </h3>
+                            {{-- Filter Tab Bar --}}
+                            <div class="flex items-center gap-2 flex-wrap justify-center">
+                                <button @click="appFilter = 'all'"
+                                    :class="appFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                    All
+                                    <span class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">{{ $appCountAll }}</span>
+                                </button>
+                                <button @click="appFilter = 'active'"
+                                    :class="appFilter === 'active' ? 'bg-green-600 text-white' : 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                    🟢 Active Jobs
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">{{ $appCountActive }}</span>
+                                </button>
+                                <button @click="appFilter = 'draft'"
+                                    :class="appFilter === 'draft' ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-yellow-700 border border-yellow-200 hover:bg-yellow-100'"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                    🟡 Draft Jobs
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">{{ $appCountDraft }}</span>
+                                </button>
+                                <button @click="appFilter = 'closed'"
+                                    :class="appFilter === 'closed' ? 'bg-red-600 text-white' : 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100'"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all">
+                                    🔴 Closed Jobs
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">{{ $appCountClosed }}</span>
+                                </button>
                             </div>
                         </div>
-                        <div>
-                            <form method="POST" action="{{ route('applicants.destroy', $application->id) }}" onsubmit="return confirm('Are you sure you want to withdraw this application?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm">
-                                    Withdraw
-                                </button>
-                            </form>
+
+                        @forelse($applications as $application)
+                        @php
+                            $jobStatus = $application->job?->status ?? 'active';
+                            $jobStatusBadge = match($jobStatus) {
+                                'active'  => ['class' => 'bg-green-100 text-green-700 border border-green-300', 'icon' => 'fa-circle-check',    'label' => 'Active'],
+                                'draft'   => ['class' => 'bg-yellow-100 text-yellow-700 border border-yellow-300', 'icon' => 'fa-pen-to-square', 'label' => 'Draft'],
+                                'closed'  => ['class' => 'bg-red-100 text-red-700 border border-red-300',       'icon' => 'fa-ban',             'label' => 'Closed'],
+                                default   => ['class' => 'bg-gray-100 text-gray-600 border border-gray-300',    'icon' => 'fa-circle',          'label' => ucfirst($jobStatus)],
+                            };
+                        @endphp
+                        <div x-show="appFilter === 'all' || appFilter === '{{ $jobStatus }}'"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 translate-y-1"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             class="flex justify-between items-center border-b border-gray-200 py-4">
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap mb-0.5">
+                                    <h4 class="text-xl font-semibold">
+                                        <a href="{{ route('jobs.show', $application->job->id) }}" class="hover:underline text-blue-900">
+                                            {{ $application->job->title }}
+                                        </a>
+                                    </h4>
+                                    {{-- Job Status Badge --}}
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold {{ $jobStatusBadge['class'] }}">
+                                        <i class="fas {{ $jobStatusBadge['icon'] }} text-[9px]"></i>
+                                        {{ $jobStatusBadge['label'] }}
+                                    </span>
+                                </div>
+                                <p class="text-gray-600">{{ $application->job->company_name }} &bull; {{ $application->job->city }}, {{ $application->job->state }}</p>
+                                <p class="text-sm text-gray-500 mt-1">Applied on: {{ $application->created_at->format('M d, Y') }}</p>
+                                <div class="mt-2">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold 
+                                        {{ $application->status === 'Shortlisted'  ? 'bg-green-100 text-green-800'  : '' }}
+                                        {{ $application->status === 'Reviewing'    ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                        {{ $application->status === 'Interviewing' ? 'bg-blue-100 text-blue-800'    : '' }}
+                                        {{ $application->status === 'Rejected'     ? 'bg-red-100 text-red-800'      : '' }}
+                                        {{ $application->status === 'Applied'      ? 'bg-gray-100 text-gray-800'    : '' }}
+                                    ">
+                                        {{ $application->status }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <form method="POST" action="{{ route('applicants.destroy', $application->id) }}" onsubmit="return confirm('Are you sure you want to withdraw this application?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm">
+                                        Withdraw
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                    @empty
-                    <p class="text-gray-700 text-center mt-6">You have not applied for any jobs yet.</p>
-                    @endforelse
+                        @empty
+                        <p class="text-gray-700 text-center mt-6">You have not applied for any jobs yet.</p>
+                        @endforelse
+
+                        {{-- No-results message when the selected filter has no matching applications --}}
+                        <div x-show="
+                            (appFilter === 'active'  && {{ $appCountActive }} === 0) ||
+                            (appFilter === 'draft'   && {{ $appCountDraft  }} === 0) ||
+                            (appFilter === 'closed'  && {{ $appCountClosed }} === 0)
+                        " class="text-center py-10 text-gray-400 text-sm" style="display:none;">
+                            <div class="text-4xl mb-2">📭</div>
+                            <p class="font-medium">No applications for jobs with this status.</p>
+                        </div>
+
+                    </div>{{-- end x-data appFilter --}}
                 </div>
+
             @endif
         </div>
     </section>

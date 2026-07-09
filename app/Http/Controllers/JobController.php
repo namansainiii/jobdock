@@ -35,7 +35,8 @@ class JobController extends Controller
             return $this->search($request);
         }
 
-        $jobs = Job::oldest()->paginate(9);
+        // Only show active jobs to the public
+        $jobs = Job::public()->oldest()->paginate(9);
         return view('jobs.index')->with('jobs', $jobs);
     }
 
@@ -56,29 +57,32 @@ class JobController extends Controller
             abort(403, 'Unauthorized. Only employers can create jobs.');
         }
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'salary' => 'required|integer',
-            'tags' => 'nullable|string',
-            'job_type' => 'required|string',
-            'remote' => 'required|boolean',
-            'requirements' => 'nullable|string',
-            'benefits' => 'nullable|string',
-            'address' => 'nullable|string',
-            'city' => 'required|string',
-            'state' => 'required|string',
-            'zipcode' => 'nullable|string',
-            'contact_email' => 'required|string',
-            'contact_phone' => 'nullable|string',
-            'company_name' => 'required|string',
+            'title'               => 'required|string|max:255',
+            'description'         => 'required|string',
+            'salary'              => 'required|integer',
+            'tags'                => 'nullable|string',
+            'job_type'            => 'required|string',
+            'remote'              => 'required|boolean',
+            'requirements'        => 'nullable|string',
+            'benefits'            => 'nullable|string',
+            'address'             => 'nullable|string',
+            'city'                => 'required|string',
+            'state'               => 'required|string',
+            'zipcode'             => 'nullable|string',
+            'contact_email'       => 'required|string',
+            'contact_phone'       => 'nullable|string',
+            'company_name'        => 'required|string',
             'company_description' => 'nullable|string',
-            'company_logo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
-            'company_website' => 'nullable|url',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'company_logo'        => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
+            'company_website'     => 'nullable|url',
+            'latitude'            => 'nullable|numeric',
+            'longitude'           => 'nullable|numeric',
+            'status'              => 'nullable|string|in:active,draft,closed',
         ]);
 
         $validatedData['user_id'] = auth()->user()->id;
+        // Default to active if not set
+        $validatedData['status'] = $validatedData['status'] ?? 'active';
 
         //check for image
         if($request->hasFile('company_logo')){
@@ -103,24 +107,25 @@ class JobController extends Controller
           $this->authorize('update' , $job);
 
           $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'salary' => 'required|integer',
-            'tags' => 'nullable|string',
-            'job_type' => 'required|string',
-            'remote' => 'required|boolean',
-            'requirements' => 'nullable|string',
-            'benefits' => 'nullable|string',
-            'address' => 'nullable|string',
-            'city' => 'required|string',
-            'state' => 'required|string',
-            'zipcode' => 'nullable|string',
-            'contact_email' => 'required|string',
-            'contact_phone' => 'nullable|string',
-            'company_name' => 'required|string',
+            'title'               => 'required|string|max:255',
+            'description'         => 'required|string',
+            'salary'              => 'required|integer',
+            'tags'                => 'nullable|string',
+            'job_type'            => 'required|string',
+            'remote'              => 'required|boolean',
+            'requirements'        => 'nullable|string',
+            'benefits'            => 'nullable|string',
+            'address'             => 'nullable|string',
+            'city'                => 'required|string',
+            'state'               => 'required|string',
+            'zipcode'             => 'nullable|string',
+            'contact_email'       => 'required|string',
+            'contact_phone'       => 'nullable|string',
+            'company_name'        => 'required|string',
             'company_description' => 'nullable|string',
-            'company_logo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
-            'company_website' => 'nullable|url',
+            'company_logo'        => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
+            'company_website'     => 'nullable|url',
+            'status'              => 'nullable|string|in:active,draft,closed',
         ]);
 
         //check for image
@@ -158,6 +163,26 @@ class JobController extends Controller
         }
     }
 
+    /**
+     * Quick-toggle job status from the employer dashboard.
+     * PATCH /jobs/{job}/status
+     */
+    public function updateStatus(Request $request, Job $job): RedirectResponse
+    {
+        $this->authorize('update', $job);
+
+        $request->validate([
+            'status' => 'required|string|in:active,draft,closed',
+        ]);
+
+        $job->update(['status' => $request->status]);
+
+        $label = ucfirst($request->status);
+        return redirect()->route('dashboard.index')
+            ->with('success', "Job status changed to {$label}!")
+            ->with('open_modal_job_id', null);
+    }
+
     public function search(Request $request): View
     {
         $keywords  = strtolower($request->input('keywords', ''));
@@ -165,7 +190,8 @@ class JobController extends Controller
         $jobTypes  = $request->input('job_type', []);     // array of selected types
         $minSalary = $request->input('min_salary');        // numeric or null
 
-        $query = Job::query();
+        // Only search through active (public) jobs
+        $query = Job::public();
 
         // Search by keywords
         if ($keywords) {
