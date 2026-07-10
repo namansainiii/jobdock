@@ -78,13 +78,13 @@
                     Dashboard
                 </x-navlink>
 
-                <x-logout-button />
-
                 @if(Auth::user()->role === 'company')
                 <x-button-link url="/jobs/create" icon="edit" :block="true">
                     Create Job
                 </x-button-link>
                 @endif
+
+                <x-logout-button :mobile="true" />
 
                 @else
 
