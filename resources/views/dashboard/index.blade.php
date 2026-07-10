@@ -22,37 +22,208 @@
 
                 <x-input.file label="Upload Avatar" id="avatar" name="avatar" />
 
-                {{-- Profile Resume Section --}}
-                <div class="mt-4 mb-3">
-                    <p class="block text-sm font-medium text-gray-700 mb-1">Profile Resume (PDF)</p>
-
-                    @if($user->resume_path)
-                        {{-- Resume exists: show file info + delete button --}}
-                        <div class="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-2">
-                            <div class="flex items-center gap-2 min-w-0">
-                                <i class="fas fa-file-pdf text-red-500 text-lg flex-shrink-0"></i>
-                                <div class="min-w-0">
-                                    <p class="text-sm font-semibold text-gray-800 truncate">Resume Saved</p>
-                                    <a href="{{ Storage::disk('s3')->url($user->resume_path) }}" target="_blank" class="text-xs text-amber-600 hover:underline">View current resume →</a>
-                                </div>
-                            </div>
-                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2">Active</span>
+                @if($user->role === 'company')
+                    {{-- Company Fields --}}
+                    <x-input.text-area label="Company About" id="company_about" name="company_about" value="{{$user->company_about}}" rows="4" placeholder="Describe your company, mission, and work culture..." />
+                    
+                    <x-input.text label="Technologies Used" id="technologies_used" name="technologies_used" value="{{$user->technologies_used}}" placeholder="e.g. PHP, Laravel, React, Tailwind CSS" list="technologies-list" />
+                    <datalist id="technologies-list">
+                        <option value="Laravel">Laravel</option>
+                        <option value="PHP">PHP</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="React">React</option>
+                        <option value="Vue">Vue</option>
+                        <option value="Angular">Angular</option>
+                        <option value="Node.js">Node.js</option>
+                        <option value="Python">Python</option>
+                        <option value="Django">Django</option>
+                        <option value="Ruby on Rails">Ruby on Rails</option>
+                        <option value="Java">Java</option>
+                        <option value="C#">C#</option>
+                        <option value="Go">Go</option>
+                        <option value="Docker">Docker</option>
+                        <option value="PostgreSQL">PostgreSQL</option>
+                        <option value="MySQL">MySQL</option>
+                        <option value="MongoDB">MongoDB</option>
+                        <option value="Tailwind CSS">Tailwind CSS</option>
+                        <option value="Bootstrap">Bootstrap</option>
+                        <option value="TypeScript">TypeScript</option>
+                        <option value="AWS">AWS</option>
+                        <option value="Firebase">Firebase</option>
+                        <option value="Swift">Swift</option>
+                        <option value="Kotlin">Kotlin</option>
+                        <option value="Flutter">Flutter</option>
+                    </datalist>
+                    
+                    <x-input.text label="Contact Phone" id="contact_phone" name="contact_phone" value="{{$user->contact_phone}}" placeholder="e.g. +1 (555) 123-4567" />
+                    
+                    <x-input.text label="Contact Email" id="contact_email" type="email" name="contact_email" value="{{$user->contact_email}}" placeholder="e.g. contact@company.com" />
+                @else
+                    {{-- User (Employee) Fields --}}
+                    <x-input.text-area label="About Yourself" id="about_me" name="about_me" value="{{$user->about_me}}" rows="4" placeholder="Describe your professional background, goals, and interests..." />
+                    
+                    <div x-data="{
+                        skills: '{{ addslashes($user->skills ?? '') }}'.split(',').map(s => s.trim()).filter(s => s.length > 0),
+                        inputValue: '',
+                        addSkill(value) {
+                            let skill = value.trim();
+                            if (skill && !this.skills.includes(skill)) {
+                                this.skills.push(skill);
+                            }
+                            this.inputValue = '';
+                        },
+                        removeSkill(index) {
+                            this.skills.splice(index, 1);
+                        },
+                        handleInput(e) {
+                            const val = this.inputValue;
+                            if (val.endsWith(',')) {
+                                let skill = val.slice(0, -1).trim();
+                                if (skill) {
+                                    this.addSkill(skill);
+                                }
+                                return;
+                            }
+                            const isSelection = e && (e.inputType === 'insertReplacementText' || !e.inputType || e.type === 'change');
+                            if (isSelection) {
+                                const datalist = document.getElementById('skills-list');
+                                if (datalist) {
+                                    const match = Array.from(datalist.options).find(opt => opt.value.toLowerCase() === val.trim().toLowerCase());
+                                    if (match) {
+                                        this.addSkill(match.value);
+                                    }
+                                }
+                            }
+                        }
+                    }" class="mb-4">
+                        <label class="block text-gray-700" for="skills_input">Skills</label>
+                        <input type="hidden" name="skills" :value="skills.join(', ')">
+                        <div class="relative">
+                            <input
+                                id="skills_input"
+                                type="text"
+                                class="w-full px-4 py-2.5 border @error('skills') border-red-500 @else border-gray-250 @enderror rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-sm"
+                                placeholder="e.g. JavaScript, Python, UI Design, Project Management"
+                                x-model="inputValue"
+                                @keydown.enter.prevent="addSkill(inputValue)"
+                                @keydown.comma.prevent="addSkill(inputValue)"
+                                @input="handleInput($event)"
+                                @change="handleInput($event)"
+                                @blur="addSkill(inputValue)"
+                                list="skills-list"
+                            />
                         </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <template x-for="(skill, index) in skills" :key="index">
+                                <span class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded-lg border border-amber-200 transition-all shadow-sm">
+                                    <span x-text="skill"></span>
+                                    <button type="button" @click="removeSkill(index)" class="text-amber-600 hover:text-amber-900 focus:outline-none font-bold text-sm ml-1 cursor-pointer">
+                                        &times;
+                                    </button>
+                                </span>
+                            </template>
+                        </div>
+                        @error('skills')
+                            <p class="text-red-500 text-sm mt-1">{{$message}}</p>
+                        @enderror
+                    </div>
+                    <datalist id="skills-list">
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="TypeScript">TypeScript</option>
+                        <option value="Python">Python</option>
+                        <option value="PHP">PHP</option>
+                        <option value="HTML & CSS">HTML & CSS</option>
+                        <option value="React">React</option>
+                        <option value="Vue">Vue</option>
+                        <option value="Angular">Angular</option>
+                        <option value="Node.js">Node.js</option>
+                        <option value="SQL">SQL</option>
+                        <option value="Java">Java</option>
+                        <option value="C++">C++</option>
+                        <option value="C#">C#</option>
+                        <option value="Go">Go</option>
+                        <option value="Swift">Swift</option>
+                        <option value="Kotlin">Kotlin</option>
+                        <option value="Flutter">Flutter</option>
+                        <option value="Frontend Development">Frontend Development</option>
+                        <option value="Backend Development">Backend Development</option>
+                        <option value="Full Stack Development">Full Stack Development</option>
+                        <option value="Mobile App Development">Mobile App Development</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Project Management">Project Management</option>
+                        <option value="Product Management">Product Management</option>
+                        <option value="Quality Assurance (QA)">Quality Assurance (QA)</option>
+                        <option value="DevOps">DevOps</option>
+                        <option value="Cloud Architecture">Cloud Architecture</option>
+                        <option value="Data Analysis">Data Analysis</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="Database Administration">Database Administration</option>
+                        <option value="Cybersecurity">Cybersecurity</option>
+                        <option value="Git & Version Control">Git & Version Control</option>
+                        <option value="Agile Methodologies">Agile Methodologies</option>
+                        <option value="Technical Writing">Technical Writing</option>
+                    </datalist>
+                    
+                    @php
+                    $educationOptions = [
+                        '' => 'Select Education Level',
+                        'High School' => 'High School',
+                        'Associate' => "Associate's Degree",
+                        'Bachelor' => "Bachelor's Degree",
+                        'Master' => "Master's Degree",
+                        'Doctorate' => 'Doctorate / PhD',
+                        'Other' => 'Other / Self-Taught'
+                    ];
+                    @endphp
+                    <x-input.select label="Education" id="education" name="education" value="{{$user->education}}" :options="$educationOptions" />
+                    
+                    <x-input.text label="Contact Phone" id="contact_phone" name="contact_phone" value="{{$user->contact_phone}}" placeholder="e.g. +1 (555) 987-6543" />
+                    
+                    <x-input.text label="Contact Email" id="contact_email" type="email" name="contact_email" value="{{$user->contact_email}}" placeholder="e.g. seeker@test.com" />
+                    
+                    {{-- Profile Resume Section --}}
+                    <div class="mt-4 mb-3 border-t border-gray-100 pt-4">
+                        <p class="block text-sm font-semibold text-gray-700 mb-1">Profile Resume (PDF)</p>
 
-                        {{-- Upload a new one to replace --}}
-                        <label class="block text-xs text-gray-500 mb-1">Replace with a new PDF:</label>
-                        <input type="file" id="resume_path" name="resume_path" accept=".pdf"
-                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 border border-gray-200 rounded-lg">
-                    @else
-                        {{-- No resume: show upload input --}}
-                        <label class="block text-xs text-gray-400 mb-1">No resume saved yet. Upload a PDF (max 5MB):</label>
-                        <input type="file" id="resume_path" name="resume_path" accept=".pdf"
-                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 border border-gray-200 rounded-lg">
-                    @endif
+                        @if($user->resume_path)
+                            {{-- Resume exists: show file info + delete button --}}
+                            <div class="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-3 py-2 mb-2">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <i class="fas fa-file-pdf text-red-500 text-lg flex-shrink-0"></i>
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800 truncate">Resume Saved</p>
+                                        <a href="{{ Storage::disk('s3')->url($user->resume_path) }}" target="_blank" class="text-xs text-amber-600 hover:underline">View current resume →</a>
+                                    </div>
+                                </div>
+                                <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2">Active</span>
+                            </div>
+
+                            {{-- Upload a new one to replace --}}
+                            <label class="block text-xs text-gray-500 mb-1">Replace with a new PDF:</label>
+                            <input type="file" id="resume_path" name="resume_path" accept=".pdf"
+                                class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 border border-gray-200 rounded-lg">
+                        @else
+                            {{-- No resume: show upload input --}}
+                            <label class="block text-xs text-gray-400 mb-1">No resume saved yet. Upload a PDF (max 5MB):</label>
+                            <input type="file" id="resume_path" name="resume_path" accept=".pdf"
+                                class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 border border-gray-200 rounded-lg">
+                        @endif
+                    </div>
+                @endif
+
+                {{-- Contact phone visibility toggle --}}
+                <div class="mt-4 mb-4 flex items-start gap-2.5">
+                    <div class="flex items-center h-5">
+                        <input id="show_phone_to_others" name="show_phone_to_others" type="checkbox" value="1" {{ $user->show_phone_to_others ? 'checked' : '' }} class="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500 cursor-pointer">
+                    </div>
+                    <div class="text-xs">
+                        <label for="show_phone_to_others" class="font-semibold text-gray-700 cursor-pointer select-none">Show contact phone number to others</label>
+                        <p class="text-gray-500">Enable this to allow users you connect with to view your phone number.</p>
+                    </div>
                 </div>
                 
-                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-xl transition-all font-semibold cursor-pointer shadow-sm">Save</button>
-
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-xl transition-all font-semibold cursor-pointer shadow-sm">Save Profile</button>
             </form>
 
             {{-- Delete resume form (outside the main form, separate POST) --}}

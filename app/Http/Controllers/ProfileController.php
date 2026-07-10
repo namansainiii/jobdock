@@ -15,13 +15,36 @@ class ProfileController extends Controller
         //get logged in user
         $user = Auth::user();
 
+        //define validation rules depending on role
+        if ($user->role === 'company') {
+            $rules = [
+                'name'              => 'required|string',
+                'email'             => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+                'avatar'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'company_about'     => 'nullable|string',
+                'technologies_used' => 'nullable|string',
+                'contact_phone'     => 'nullable|string',
+                'contact_email'     => 'nullable|email',
+            ];
+        } else {
+            $rules = [
+                'name'              => 'required|string',
+                'email'             => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+                'avatar'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'resume_path'       => 'nullable|file|mimes:pdf|max:5120',
+                'about_me'          => 'nullable|string',
+                'skills'            => 'nullable|string',
+                'education'         => 'nullable|string',
+                'contact_phone'     => 'nullable|string',
+                'contact_email'     => 'nullable|email',
+            ];
+        }
+
         //validate data
-        $validatedData = $request->validate([
-            'name'        => 'required|string',
-            'email'       => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-            'avatar'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'resume_path' => 'nullable|file|mimes:pdf|max:5120',
-        ]);
+        $validatedData = $request->validate($rules);
+
+        // Explicitly set boolean checkbox flag
+        $validatedData['show_phone_to_others'] = $request->has('show_phone_to_others');
 
         // --- Handle avatar upload ---
         if ($request->hasFile('avatar')) {

@@ -9,6 +9,7 @@
     'readonly' => false,
     'hidden' => false,
     'width' => 'w-full',
+    'list' => null,
 ])
 
 
@@ -26,6 +27,7 @@
         {{ $required ? 'required' : '' }}
         {{ $readonly ? 'readonly' : '' }}
         {{ $hidden ? 'hidden' : '' }}
+        @if($list) list="{{ $list }}" @endif
     />
     @error($name)
         <p class="text-red-500 text-sm mt-1">{{$message}}</p>
