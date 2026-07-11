@@ -88,6 +88,6 @@ class ProfileController extends Controller
             $user->update(['resume_path' => null]);
         }
 
-        return redirect()->route('dashboard.index')->with('success', 'Resume removed successfully!');
+        return redirect()->route('dashboard.index')->with('success', 'Resume removed successfully!')->with('edit_profile', true);
     }
 }

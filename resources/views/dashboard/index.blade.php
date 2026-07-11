@@ -1,7 +1,7 @@
 <x-layout>
     <section class="max-w-8xl mx-auto flex flex-col md:flex-row items-start gap-6 px-4 py-6 @if($user->role === 'company') md:h-[calc(100vh-140px)] @endif">
         <!-- Left Pane: Profile Card -->
-        <div x-data="{ editing: {{ $errors->any() ? 'true' : 'false' }} }" class="bg-white p-6 rounded-2xl shadow-md border border-gray-150 w-full md:w-1/3 md:sticky md:top-6">
+        <div x-data="{ editing: {{ ($errors->any() || session('edit_profile')) ? 'true' : 'false' }} }" class="bg-white p-6 rounded-2xl shadow-md border border-gray-150 w-full md:w-1/3 md:sticky md:top-6">
             <div class="flex items-center justify-between mb-6 pb-2 border-b border-gray-100">
                 <h3 class="text-2xl font-bold text-gray-800">
                     My Profile
