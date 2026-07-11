@@ -36,7 +36,7 @@ class JobController extends Controller
         }
 
         // Only show active jobs to the public
-        $jobs = Job::public()->oldest()->paginate(9);
+        $jobs = Job::public()->latest()->paginate(9);
         return view('jobs.index')->with('jobs', $jobs);
     }
 
@@ -261,7 +261,7 @@ class JobController extends Controller
             $query->where('salary', '>=', (int) $minSalary);
         }
 
-        $jobs = $query->oldest()->paginate(9)->withQueryString();
+        $jobs = $query->latest()->paginate(9)->withQueryString();
 
         return view('jobs.index')->with('jobs', $jobs);
     }
