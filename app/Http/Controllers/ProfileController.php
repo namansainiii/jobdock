@@ -49,13 +49,10 @@ class ProfileController extends Controller
         // --- Handle avatar upload ---
         if ($request->hasFile('avatar')) {
             if ($user->avatar) {
-                Storage::disk('s3')->delete($user->avatar);
+                Storage::disk('public')->delete($user->avatar);
             }
 
-            $extension = $request->file('avatar')->getClientOriginalExtension();
-            $fileName  = str_replace(['@', '.', ' '], ['_', '_', '_'], strtolower($user->email)) . '.' . $extension;
-
-            $path = $request->file('avatar')->storeAs('avatars', $fileName, 's3');
+            $path = $request->file('avatar')->store('avatars', 'public');
             $validatedData['avatar'] = $path;
         } else {
             // Don't overwrite avatar if no new file was uploaded
@@ -66,13 +63,10 @@ class ProfileController extends Controller
         if ($request->hasFile('resume_path')) {
             // Delete old resume if one exists
             if ($user->resume_path) {
-                Storage::disk('s3')->delete($user->resume_path);
+                Storage::disk('public')->delete($user->resume_path);
             }
 
-            $resumeExtension = $request->file('resume_path')->getClientOriginalExtension();
-            $resumeFileName  = str_replace(['@', '.', ' '], ['_', '_', '_'], strtolower($user->email)) . '_resume.' . $resumeExtension;
-
-            $resumePath = $request->file('resume_path')->storeAs('resumes', $resumeFileName, 's3');
+            $resumePath = $request->file('resume_path')->store('resumes', 'public');
             $validatedData['resume_path'] = $resumePath;
         } else {
             // Don't overwrite resume if no new file was uploaded
@@ -90,7 +84,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if ($user->resume_path) {
-            Storage::disk('s3')->delete($user->resume_path);
+            Storage::disk('public')->delete($user->resume_path);
             $user->update(['resume_path' => null]);
         }
 

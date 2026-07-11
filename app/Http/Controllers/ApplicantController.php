@@ -86,7 +86,7 @@ class ApplicantController extends Controller
             }
         }
 
-        if($applicant->resume_path){
+        if ($applicant->resume_path && str_starts_with($applicant->resume_path, 'resume/')) {
             Storage::disk('public')->delete($applicant->resume_path);
         }
 
@@ -138,4 +138,5 @@ class ApplicantController extends Controller
             ->with('success', 'Applicant evaluation notes updated successfully!')
             ->with('open_modal_job_id', $applicant->job_id)
             ->with('open_drawer_id', $applicant->id);
+    }
 }

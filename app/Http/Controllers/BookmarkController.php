@@ -24,7 +24,7 @@ class BookmarkController extends Controller
         $user = Auth::user();
 
         if($user->bookmarkedJobs()->where('job_id' , $job->id)->exists()){
-            return back()->with('status' , 'Job is already bookmarked');
+            return back()->with('error' , 'Job is already bookmarked');
         }
 
         //create new book marking

@@ -393,7 +393,7 @@
                                                             </div>
                                                             <div class="flex-1 min-w-0">
                                                                 <p class="text-xs font-bold text-gray-800">Profile Resume Available</p>
-                                                                <a href="{{ Storage::disk('s3')->url(auth()->user()->resume_path) }}" target="_blank"
+                                                                <a href="{{ asset('storage/' . auth()->user()->resume_path) }}" target="_blank"
                                                                     class="text-[11px] text-amber-600 hover:underline">Preview PDF →</a>
                                                             </div>
                                                         </div>

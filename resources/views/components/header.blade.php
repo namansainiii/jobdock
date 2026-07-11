@@ -32,13 +32,11 @@
 
                     <div class="flex items-center space-x-3">
                         <a href="{{ route('dashboard.index') }}">
-                            <img src="{{ asset('images/profile.png') }}" class="w-10 h-10 object-cover rounded-full" />
-
-                            {{-- @if(Auth::user()->avatar)
-                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->avatar }}" class="w-10 h-10 object-cover rounded-full"/>
+                            @if(Auth::user()->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-10 h-10 object-cover rounded-full ring-2 ring-slate-800"/>
                             @else
-                                <img src="{{ asset('storage/app/public/avatar/profile.png')}}" alt="{{ Auth::user()->avatar }}" class="w-10 h-10 object-cover rounded-full" />
-                            @endif --}}
+                                <img src="{{ asset('images/profile.png') }}" class="w-10 h-10 object-cover rounded-full" />
+                            @endif
                         </a>
                     </div>
 

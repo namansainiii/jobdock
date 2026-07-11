@@ -22,7 +22,7 @@
             
             <div class="mt-2 flex justify-center mb-6">
                 @if($user->avatar)
-                    <img src="{{ Storage::disk('s3')->url($user->avatar) }}" alt="{{ $user->name }}" class="w-32 h-32 object-cover rounded-full ring-4 ring-amber-500/10">
+                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-32 h-32 object-cover rounded-full ring-4 ring-amber-500/10">
                 @else
                     <img src="{{ asset('images/profile.png') }}" class="w-32 h-32 object-cover rounded-full ring-4 ring-amber-500/10">
                 @endif
@@ -128,7 +128,7 @@
                                     <i class="fas fa-file-pdf text-red-500 text-lg flex-shrink-0"></i>
                                     <span class="text-xs font-bold text-gray-800 truncate">Resume Saved</span>
                                 </div>
-                                <a href="{{ Storage::disk('s3')->url($user->resume_path) }}" target="_blank" class="text-xs font-bold text-amber-600 hover:underline flex-shrink-0 ml-2">View current resume →</a>
+                                <a href="{{ asset('storage/' . $user->resume_path) }}" target="_blank" class="text-xs font-bold text-amber-600 hover:underline flex-shrink-0 ml-2">View current resume →</a>
                             </div>
                         </div>
                     @endif
@@ -328,7 +328,7 @@
                                         <i class="fas fa-file-pdf text-red-500 text-lg flex-shrink-0"></i>
                                         <div class="min-w-0">
                                             <p class="text-sm font-semibold text-gray-800 truncate">Resume Saved</p>
-                                            <a href="{{ Storage::disk('s3')->url($user->resume_path) }}" target="_blank" class="text-xs text-amber-600 hover:underline">View current resume →</a>
+                                            <a href="{{ asset('storage/' . $user->resume_path) }}" target="_blank" class="text-xs text-amber-600 hover:underline">View current resume →</a>
                                         </div>
                                     </div>
                                     <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2">Active</span>
@@ -765,10 +765,10 @@
                                         <!-- Detail Footer -->
                                         <div class="border-t border-gray-150 px-6 py-4 bg-gray-50 flex items-center justify-between mt-auto" @click.stop>
                                             <div class="flex items-center gap-2">
-                                                <a href="{{ asset('storage/' . $applicant->resume_path )}}" target="_blank" class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all">
+                                                <a href="{{ asset('storage/' . $applicant->resume_path) }}" target="_blank" class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all">
                                                     <i class="fas fa-eye"></i> View Resume
                                                 </a>
-                                                <a href="{{ asset('storage/' . $applicant->resume_path )}}" target="_blank" class="px-3 py-2 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all" download>
+                                                <a href="{{ asset('storage/' . $applicant->resume_path) }}" target="_blank" class="px-3 py-2 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all" download>
                                                     <i class="fas fa-download text-gray-400"></i> Download
                                                 </a>
                                             </div>
