@@ -71,7 +71,8 @@
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    class="fixed top-5 right-5 z-[9999] max-w-sm w-full bg-white shadow-xl rounded-2xl border-l-4 {{ $config['border'] }} overflow-hidden pointer-events-auto"
+    class="max-w-sm w-full bg-white shadow-xl rounded-2xl border-l-4 {{ $config['border'] }} overflow-hidden pointer-events-auto"
+    style="position: fixed; top: 20px; right: 20px; z-index: 9999;"
     role="alert"
 >
     <div class="p-4 flex items-start gap-3">
