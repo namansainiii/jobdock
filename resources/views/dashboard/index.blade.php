@@ -1,7 +1,10 @@
 <x-layout>
     <section class="max-w-8xl mx-auto flex flex-col md:flex-row items-start gap-6 px-4 py-6 @if($user->role === 'company') md:h-[calc(100vh-140px)] @endif">
         <!-- Left Pane: Profile Card -->
-        <div x-data="{ editing: {{ ($errors->any() || session('edit_profile')) ? 'true' : 'false' }} }" class="bg-white p-6 rounded-2xl shadow-md border border-gray-150 w-full md:w-1/3 md:sticky md:top-6">
+        <div x-data="{ 
+            editing: {{ ($errors->any() || session('edit_profile')) ? 'true' : 'false' }},
+            avatarPreview: '{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/profile.png') }}'
+        }" class="bg-white p-6 rounded-2xl shadow-md border border-gray-150 w-full md:w-1/3 md:sticky md:top-6">
             <div class="flex items-center justify-between mb-6 pb-2 border-b border-gray-100">
                 <h3 class="text-2xl font-bold text-gray-800">
                     My Profile
@@ -21,11 +24,7 @@
             </div>
             
             <div class="mt-2 flex justify-center mb-6">
-                @if($user->avatar)
-                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-32 h-32 object-cover rounded-full ring-4 ring-amber-500/10">
-                @else
-                    <img src="{{ asset('images/profile.png') }}" class="w-32 h-32 object-cover rounded-full ring-4 ring-amber-500/10">
-                @endif
+                <img :src="avatarPreview" alt="{{ $user->name }}" class="w-32 h-32 object-cover rounded-full ring-4 ring-amber-500/10">
             </div>
 
             <!-- Display Mode -->
@@ -155,7 +154,12 @@
 
                     <x-input.text label="Email" id="email" type="email" name="email" value="{{$user->email}}" />
 
-                    <x-input.file label="Upload Avatar" id="avatar" name="avatar" />
+                    <x-input.file label="Upload Avatar" id="avatar" name="avatar" @change="
+                        const file = $event.target.files[0];
+                        if (file) {
+                            avatarPreview = URL.createObjectURL(file);
+                        }
+                    " />
 
                     @if($user->role === 'company')
                         {{-- Company Fields --}}
