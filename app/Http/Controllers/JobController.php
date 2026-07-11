@@ -226,7 +226,34 @@ class JobController extends Controller
 
         // Filter by job type (checkboxes — multi-select array)
         if (!empty($jobTypes)) {
-            $query->whereIn('job_type', $jobTypes);
+            $query->where(function ($q) use ($jobTypes) {
+                $hasRemote = in_array('remote', array_map('strtolower', $jobTypes));
+                
+                // Filter out 'remote' from the job types list
+                $textTypes = array_filter($jobTypes, function($type) {
+                    return strtolower($type) !== 'remote';
+                });
+
+                if ($hasRemote) {
+                    $q->where('remote', 1);
+                }
+
+                if (!empty($textTypes)) {
+                    if ($hasRemote) {
+                        $q->orWhere(function($subQ) use ($textTypes) {
+                            foreach ($textTypes as $type) {
+                                $subQ->orWhereRaw('LOWER(job_type) = ?', [strtolower($type)]);
+                            }
+                        });
+                    } else {
+                        $q->where(function($subQ) use ($textTypes) {
+                            foreach ($textTypes as $type) {
+                                $subQ->orWhereRaw('LOWER(job_type) = ?', [strtolower($type)]);
+                            }
+                        });
+                    }
+                }
+            });
         }
 
         // Filter by minimum salary

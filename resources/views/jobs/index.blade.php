@@ -1,9 +1,13 @@
 <x-layout>
   @php
-    $hasFilters = request()->hasAny(['keywords', 'location', 'job_type', 'min_salary']);
-    $activeJobTypes = request()->input('job_type', []);
-    $activeMinSalary = request()->input('min_salary', '');
-    $activeFilterCount = count($activeJobTypes) + ($activeMinSalary !== '' ? 1 : 0);
+    $hasFilters = request()->filled('keywords') || 
+                  request()->filled('location') || 
+                  (request()->filled('job_type') && count(array_filter(request()->input('job_type', []))) > 0) || 
+                  request()->filled('min_salary');
+
+    $activeJobTypes = array_filter(request()->input('job_type', []));
+    $activeMinSalary = request()->input('min_salary') ?? '';
+    $activeFilterCount = count($activeJobTypes) + (request()->filled('min_salary') ? 1 : 0);
   @endphp
 
   <div class="max-w-7xl mx-auto px-4 pb-12">
@@ -90,8 +94,8 @@
           @if($activeFilterCount > 0)
             @php
               $clearFiltersParams = [];
-              if(request('keywords')) $clearFiltersParams['keywords'] = request('keywords');
-              if(request('location')) $clearFiltersParams['location'] = request('location');
+              if(request()->filled('keywords')) $clearFiltersParams['keywords'] = request('keywords');
+              if(request()->filled('location')) $clearFiltersParams['location'] = request('location');
               $clearFiltersUrl = route('jobs.index') . ($clearFiltersParams ? '?' . http_build_query($clearFiltersParams) : '');
             @endphp
             <a href="{{ $clearFiltersUrl }}"
