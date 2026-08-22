@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('salary');
             $table->string('tags')->nullable();
             $table->enum('job_type' , ['Full-Time' , 'Part-Time'])->default('Full-Time');
-            $table->boolean('remote')->default('false');
+            $table->boolean('remote')->default(false);
             $table->text('requirements')->nullable();
             $table->text('benefits')->nullable();
             $table->text('address')->nullable();
