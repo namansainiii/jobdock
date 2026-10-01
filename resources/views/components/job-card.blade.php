@@ -28,7 +28,6 @@
         <div class="flex items-start gap-4 mb-4">
             @if($logoUrl)
                 <img src="{{ $logoUrl }}" alt="{{ $job->company_name }}"
-                    width="56" height="56" loading="lazy" decoding="async"
                     class="w-14 h-14 rounded-xl object-contain bg-gray-50 p-1 border border-gray-100 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
             @else
                 <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-amber-100">
