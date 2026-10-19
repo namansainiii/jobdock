@@ -33,9 +33,9 @@
                     <div class="flex items-center space-x-3">
                         <a href="{{ route('dashboard.index') }}">
                             @if(Auth::user()->avatar)
-                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-10 h-10 object-cover rounded-full ring-2 ring-slate-800"/>
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" width="40" height="40" class="w-10 h-10 object-cover rounded-full ring-2 ring-slate-800"/>
                             @else
-                                <img src="{{ asset('images/profile.png') }}" class="w-10 h-10 object-cover rounded-full" />
+                                <img src="{{ asset('images/profile.png') }}" alt="Profile" width="40" height="40" class="w-10 h-10 object-cover rounded-full" />
                             @endif
                         </a>
                     </div>
@@ -61,7 +61,7 @@
                 </button>
             </div>
             <!-- Mobile Menu -->
-            <nav x-show="open" @click.outside="open = false" id="mobile-menu" class="md:hidden bg-slate-900 text-white mt-5 pb-4 space-y-2 border-t border-slate-800">
+            <nav x-show="open" x-cloak @click.outside="open = false" id="mobile-menu" class="md:hidden bg-slate-900 text-white mt-5 pb-4 space-y-2 border-t border-slate-800">
                 <x-navlink url="/jobs" :active="request()->is('jobs')" :mobile="true">
                     All Jobs
                 </x-navlink>
